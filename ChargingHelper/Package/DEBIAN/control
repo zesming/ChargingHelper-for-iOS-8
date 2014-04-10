@@ -1,0 +1,17 @@
+Package: cn.ming.ChargingHelper
+Name: ChargingHelper
+Version: 0.1-2
+Description: 
+Section: System
+Depends: firmware (>= 6.0), mobilesubstrate
+Conflicts: 
+Replaces: 
+Priority: optional
+Architecture: iphoneos-arm
+Author: Ming
+dev: 
+Homepage: 
+Depiction: 
+Maintainer: 
+Icon: 
+

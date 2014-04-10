@@ -1,0 +1,384 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		FE56F2CC18F62DFC007475D6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE56F2CB18F62DFC007475D6 /* Foundation.framework */; };
+		FE56F2DD18F62DFC007475D6 /* ChargingHelper.mm in Sources */ = {isa = PBXBuildFile; fileRef = FE56F2DC18F62DFC007475D6 /* ChargingHelper.mm */; };
+		FE56F2E718F62E13007475D6 /* libsubstrate.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FE56F2E618F62E13007475D6 /* libsubstrate.dylib */; };
+		FE56F2E918F62E1D007475D6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE56F2E818F62E1D007475D6 /* UIKit.framework */; };
+		FE56F2EB18F62E24007475D6 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE56F2EA18F62E24007475D6 /* AudioToolbox.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		FE56F2C818F62DFC007475D6 /* ChargingHelper.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = ChargingHelper.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE56F2CB18F62DFC007475D6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		FE56F2D018F62DFC007475D6 /* control.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = control.txt; path = Package/DEBIAN/control.txt; sourceTree = "<group>"; };
+		FE56F2D118F62DFC007475D6 /* control */ = {isa = PBXFileReference; lastKnownFileType = text; name = control; path = Package/DEBIAN/control; sourceTree = "<group>"; };
+		FE56F2D318F62DFC007475D6 /* PackageVersion.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = PackageVersion.plist; sourceTree = "<group>"; };
+		FE56F2D718F62DFC007475D6 /* ChargingHelper.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = ChargingHelper.plist; path = Package/Library/PreferenceLoader/Preferences/ChargingHelper.plist; sourceTree = "<group>"; };
+		FE56F2D818F62DFC007475D6 /* ChargingHelperIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChargingHelperIcon.png; path = Package/Library/PreferenceLoader/Preferences/ChargingHelperIcon.png; sourceTree = "<group>"; };
+		FE56F2D918F62DFC007475D6 /* ChargingHelperIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ChargingHelperIcon@2x.png"; path = "Package/Library/PreferenceLoader/Preferences/ChargingHelperIcon@2x.png"; sourceTree = "<group>"; };
+		FE56F2DA18F62DFC007475D6 /* ChargingHelper-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ChargingHelper-Prefix.pch"; sourceTree = "<group>"; };
+		FE56F2DB18F62DFC007475D6 /* ChargingHelper.xm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ChargingHelper.xm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		FE56F2DC18F62DFC007475D6 /* ChargingHelper.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ChargingHelper.mm; sourceTree = "<group>"; };
+		FE56F2E018F62DFC007475D6 /* ChargingHelper.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = ChargingHelper.plist; path = Package/Library/MobileSubstrate/DynamicLibraries/ChargingHelper.plist; sourceTree = "<group>"; };
+		FE56F2E618F62E13007475D6 /* libsubstrate.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libsubstrate.dylib; sourceTree = "<group>"; };
+		FE56F2E818F62E1D007475D6 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		FE56F2EA18F62E24007475D6 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		FE56F2C418F62DFC007475D6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE56F2EB18F62E24007475D6 /* AudioToolbox.framework in Frameworks */,
+				FE56F2E918F62E1D007475D6 /* UIKit.framework in Frameworks */,
+				FE56F2E718F62E13007475D6 /* libsubstrate.dylib in Frameworks */,
+				FE56F2CC18F62DFC007475D6 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		FE56F2BD18F62DFC007475D6 = {
+			isa = PBXGroup;
+			children = (
+				FE56F2CD18F62DFC007475D6 /* ChargingHelper */,
+				FE56F2CA18F62DFC007475D6 /* Frameworks */,
+				FE56F2C918F62DFC007475D6 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		FE56F2C918F62DFC007475D6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FE56F2C818F62DFC007475D6 /* ChargingHelper.dylib */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FE56F2CA18F62DFC007475D6 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				FE56F2EA18F62E24007475D6 /* AudioToolbox.framework */,
+				FE56F2E818F62E1D007475D6 /* UIKit.framework */,
+				FE56F2E618F62E13007475D6 /* libsubstrate.dylib */,
+				FE56F2CB18F62DFC007475D6 /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		FE56F2CD18F62DFC007475D6 /* ChargingHelper */ = {
+			isa = PBXGroup;
+			children = (
+				FE56F2DB18F62DFC007475D6 /* ChargingHelper.xm */,
+				FE56F2DC18F62DFC007475D6 /* ChargingHelper.mm */,
+				FE56F2CE18F62DFC007475D6 /* Package */,
+				FE56F2D218F62DFC007475D6 /* Supporting Files */,
+			);
+			path = ChargingHelper;
+			sourceTree = "<group>";
+		};
+		FE56F2CE18F62DFC007475D6 /* Package */ = {
+			isa = PBXGroup;
+			children = (
+				FE56F2CF18F62DFC007475D6 /* DEBIAN */,
+				FE56F2D418F62DFC007475D6 /* Library */,
+			);
+			name = Package;
+			sourceTree = "<group>";
+		};
+		FE56F2CF18F62DFC007475D6 /* DEBIAN */ = {
+			isa = PBXGroup;
+			children = (
+				FE56F2D018F62DFC007475D6 /* control.txt */,
+				FE56F2D118F62DFC007475D6 /* control */,
+			);
+			name = DEBIAN;
+			sourceTree = "<group>";
+		};
+		FE56F2D218F62DFC007475D6 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				FE56F2D318F62DFC007475D6 /* PackageVersion.plist */,
+				FE56F2DA18F62DFC007475D6 /* ChargingHelper-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		FE56F2D418F62DFC007475D6 /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				FE56F2D518F62DFC007475D6 /* PreferenceLoader */,
+				FE56F2DE18F62DFC007475D6 /* MobileSubstrate */,
+			);
+			name = Library;
+			sourceTree = "<group>";
+		};
+		FE56F2D518F62DFC007475D6 /* PreferenceLoader */ = {
+			isa = PBXGroup;
+			children = (
+				FE56F2D618F62DFC007475D6 /* Preferences */,
+			);
+			name = PreferenceLoader;
+			sourceTree = "<group>";
+		};
+		FE56F2D618F62DFC007475D6 /* Preferences */ = {
+			isa = PBXGroup;
+			children = (
+				FE56F2D718F62DFC007475D6 /* ChargingHelper.plist */,
+				FE56F2D818F62DFC007475D6 /* ChargingHelperIcon.png */,
+				FE56F2D918F62DFC007475D6 /* ChargingHelperIcon@2x.png */,
+			);
+			name = Preferences;
+			sourceTree = "<group>";
+		};
+		FE56F2DE18F62DFC007475D6 /* MobileSubstrate */ = {
+			isa = PBXGroup;
+			children = (
+				FE56F2DF18F62DFC007475D6 /* DynamicLibraries */,
+			);
+			name = MobileSubstrate;
+			sourceTree = "<group>";
+		};
+		FE56F2DF18F62DFC007475D6 /* DynamicLibraries */ = {
+			isa = PBXGroup;
+			children = (
+				FE56F2E018F62DFC007475D6 /* ChargingHelper.plist */,
+			);
+			name = DynamicLibraries;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		FE56F2C518F62DFC007475D6 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		FE56F2C718F62DFC007475D6 /* ChargingHelper */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FE56F2E318F62DFC007475D6 /* Build configuration list for PBXNativeTarget "ChargingHelper" */;
+			buildPhases = (
+				FE56F2C218F62DFC007475D6 /* ShellScript */,
+				FE56F2C318F62DFC007475D6 /* Sources */,
+				FE56F2C418F62DFC007475D6 /* Frameworks */,
+				FE56F2C518F62DFC007475D6 /* Headers */,
+				FE56F2C618F62DFC007475D6 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ChargingHelper;
+			productName = ChargingHelper;
+			productReference = FE56F2C818F62DFC007475D6 /* ChargingHelper.dylib */;
+			productType = "com.apple.product-type.library.dynamic";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		FE56F2BE18F62DFC007475D6 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0510;
+			};
+			buildConfigurationList = FE56F2C118F62DFC007475D6 /* Build configuration list for PBXProject "ChargingHelper" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = FE56F2BD18F62DFC007475D6;
+			productRefGroup = FE56F2C918F62DFC007475D6 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				FE56F2C718F62DFC007475D6 /* ChargingHelper */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		FE56F2C218F62DFC007475D6 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/opt/iOSOpenDev/bin/iosod --xcbp-logos";
+		};
+		FE56F2C618F62DFC007475D6 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/opt/iOSOpenDev/bin/iosod --xcbp";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		FE56F2C318F62DFC007475D6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE56F2DD18F62DFC007475D6 /* ChargingHelper.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		FE56F2E118F62DFC007475D6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				COPY_PHASE_STRIP = NO;
+				EXCLUDED_RECURSIVE_SEARCH_PATH_SUBDIRECTORIES = "*.nib *.lproj *.gch (*) .DS_Store CVS .svn .git .hg *.xcodeproj *.xcode *.pbproj *.pbxproj";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(iOSOpenDevPath)/frameworks/**",
+					"$(SDKROOT)/System/Library/PrivateFrameworks",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(iOSOpenDevPath)/include/**";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				LIBRARY_SEARCH_PATHS = "$(iOSOpenDevPath)/lib/**";
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = NO;
+				iOSOpenDevPath = /opt/iOSOpenDev;
+			};
+			name = Debug;
+		};
+		FE56F2E218F62DFC007475D6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				COPY_PHASE_STRIP = YES;
+				EXCLUDED_RECURSIVE_SEARCH_PATH_SUBDIRECTORIES = "*.nib *.lproj *.gch (*) .DS_Store CVS .svn .git .hg *.xcodeproj *.xcode *.pbproj *.pbxproj";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(iOSOpenDevPath)/frameworks/**",
+					"$(SDKROOT)/System/Library/PrivateFrameworks",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(iOSOpenDevPath)/include/**";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				LIBRARY_SEARCH_PATHS = "$(iOSOpenDevPath)/lib/**";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				iOSOpenDevPath = /opt/iOSOpenDev;
+			};
+			name = Release;
+		};
+		FE56F2E418F62DFC007475D6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "ChargingHelper/ChargingHelper-Prefix.pch";
+				INSTALL_PATH = /Library/MobileSubstrate/DynamicLibraries;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				iOSOpenDevBuildPackageOnAnyBuild = NO;
+				iOSOpenDevCopyOnBuild = NO;
+				iOSOpenDevDevice = "";
+				iOSOpenDevInstallOnAnyBuild = NO;
+				iOSOpenDevInstallOnProfiling = NO;
+				iOSOpenDevRespringOnInstall = YES;
+				iOSOpenDevUsePackageVersionPList = YES;
+			};
+			name = Debug;
+		};
+		FE56F2E518F62DFC007475D6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "ChargingHelper/ChargingHelper-Prefix.pch";
+				INSTALL_PATH = /Library/MobileSubstrate/DynamicLibraries;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				iOSOpenDevBuildPackageOnAnyBuild = NO;
+				iOSOpenDevCopyOnBuild = NO;
+				iOSOpenDevDevice = "";
+				iOSOpenDevInstallOnAnyBuild = NO;
+				iOSOpenDevInstallOnProfiling = NO;
+				iOSOpenDevRespringOnInstall = YES;
+				iOSOpenDevUsePackageVersionPList = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		FE56F2C118F62DFC007475D6 /* Build configuration list for PBXProject "ChargingHelper" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FE56F2E118F62DFC007475D6 /* Debug */,
+				FE56F2E218F62DFC007475D6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FE56F2E318F62DFC007475D6 /* Build configuration list for PBXNativeTarget "ChargingHelper" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FE56F2E418F62DFC007475D6 /* Debug */,
+				FE56F2E518F62DFC007475D6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = FE56F2BE18F62DFC007475D6 /* Project object */;
+}
