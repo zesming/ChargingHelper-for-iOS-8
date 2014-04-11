@@ -1,4 +1,4 @@
-#line 1 "/Users/zhao/Desktop/ChargingHelper/ChargingHelper/ChargingHelper.xm"
+#line 1 "/Users/Ming/Desktop/ChargingHelper/ChargingHelper/ChargingHelper.xm"
 #import <UIKit/UIKit.h>
 #import <AudioToolbox/AudioToolbox.h>
 
@@ -10,7 +10,7 @@ BOOL isCharging;
 @class SBLockScreenBatteryChargingView; @class SBAwayChargingView; @class SpringBoard; 
 static void (*_logos_orig$_ungrouped$SpringBoard$batteryStatusDidChange$)(SpringBoard*, SEL, id); static void _logos_method$_ungrouped$SpringBoard$batteryStatusDidChange$(SpringBoard*, SEL, id); static void (*_logos_orig$_ungrouped$SBAwayChargingView$addChargingView)(SBAwayChargingView*, SEL); static void _logos_method$_ungrouped$SBAwayChargingView$addChargingView(SBAwayChargingView*, SEL); static void (*_logos_orig$_ungrouped$SBAwayChargingView$dealloc)(SBAwayChargingView*, SEL); static void _logos_method$_ungrouped$SBAwayChargingView$dealloc(SBAwayChargingView*, SEL); static void (*_logos_orig$_ungrouped$SBLockScreenBatteryChargingView$layoutSubviews)(SBLockScreenBatteryChargingView*, SEL); static void _logos_method$_ungrouped$SBLockScreenBatteryChargingView$layoutSubviews(SBLockScreenBatteryChargingView*, SEL); static void (*_logos_orig$_ungrouped$SBLockScreenBatteryChargingView$dealloc)(SBLockScreenBatteryChargingView*, SEL); static void _logos_method$_ungrouped$SBLockScreenBatteryChargingView$dealloc(SBLockScreenBatteryChargingView*, SEL); 
 
-#line 7 "/Users/zhao/Desktop/ChargingHelper/ChargingHelper/ChargingHelper.xm"
+#line 7 "/Users/Ming/Desktop/ChargingHelper/ChargingHelper/ChargingHelper.xm"
 
 
 static void _logos_method$_ungrouped$SpringBoard$batteryStatusDidChange$(SpringBoard* self, SEL _cmd, id batteryStatus) {
@@ -147,7 +147,7 @@ static void _logos_method$_ungrouped$SBAwayChargingView$addChargingView(SBAwayCh
     if (levelPercent == 100.0f) {
         chargingMsg = @"充电已完成！";
     }else if(!isCharging){
-        chargingMsg = @"请拔掉充电器";
+        chargingMsg = @"没有进行充电";
     }else{
         chargingMsg = @"正在充电中...";
     }
@@ -156,19 +156,23 @@ static void _logos_method$_ungrouped$SBAwayChargingView$addChargingView(SBAwayCh
     float timeHour;
     int hour, min;
     NSString * timeMsg;
-    
-    if (instantAmperage <= 0 ) {
-        timeMsg = @"充电已完成，请拔掉充电器。";
-    } else {
-        timeHour = ((float)maxCapacity  - currentCapacity) / instantAmperage;
-        hour = timeHour;
-        min = (timeHour - hour) * 60;
-        if (hour == 0) {
-            timeMsg = [NSString stringWithFormat:@"预计充电时间：%d分钟", min];
+    if(isCharging){
+        if(instantAmperage > 0){
+            timeHour = ((float)maxCapacity  - currentCapacity) / instantAmperage;
+            hour = timeHour;
+            min = (timeHour - hour) * 60;
+            if (hour == 0) {
+                timeMsg = [NSString stringWithFormat:@"预计充电时间：%d分钟", min];
+            }else{
+                timeMsg = [NSString stringWithFormat:@"预计充电时间：%d小时%d分钟", hour, min];
+            }
         }else{
-            timeMsg = [NSString stringWithFormat:@"预计充电时间：%d小时%d分钟", hour, min];
+            timeMsg = @"正在预估时间...";
         }
+    }else{
+        timeMsg = @"没有进行充电，建议拔掉充电器";
     }
+    
     remainingTime.text = timeMsg;
 
 }
@@ -200,14 +204,14 @@ static void _logos_method$_ungrouped$SBAwayChargingView$dealloc(SBAwayChargingVi
 static void _logos_method$_ungrouped$SBLockScreenBatteryChargingView$layoutSubviews(SBLockScreenBatteryChargingView* self, SEL _cmd) {
     _logos_orig$_ungrouped$SBLockScreenBatteryChargingView$layoutSubviews(self, _cmd);
     if(!isInited){
+        
         containView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 280, 30)];
-        containView.center = CGPointMake(160, 200);
+        containView.center = CGPointMake(160, 165);
         containView.backgroundColor = [UIColor clearColor];
         
         batteryLevel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 110, 30)];
         batteryLevel.font = [UIFont boldSystemFontOfSize:25];
         [batteryLevel setTextAlignment:NSTextAlignmentCenter];
-        [batteryLevel setTextColor:[UIColor blackColor]];
         batteryLevel.backgroundColor = [UIColor clearColor];
         [containView addSubview:batteryLevel];
         
@@ -219,9 +223,28 @@ static void _logos_method$_ungrouped$SBLockScreenBatteryChargingView$layoutSubvi
         
         remainingTime = [[UILabel alloc] initWithFrame:CGRectMake(110, 15, 170, 15)];
         remainingTime.font = [UIFont systemFontOfSize:12];
-        [remainingTime setTextColor:[UIColor blackColor]];
+        
         remainingTime.backgroundColor = [UIColor clearColor];
         [containView addSubview:remainingTime];
+        
+        NSDictionary *preference = [[NSDictionary alloc] initWithContentsOfFile:@"/var/mobile/Library/Preferences/cn.ming.ChargingHelper.plist"];
+        int colorValue = [[preference objectForKey:@"textColor"] intValue];
+        [preference release];
+        
+        UIColor *textColor;
+        switch (colorValue) {
+            case 1:
+                textColor = [UIColor whiteColor];
+                break;
+            case 2:
+                textColor = [UIColor blackColor];
+                break;
+            default:
+                textColor = [UIColor whiteColor];
+                break;
+        }
+        [batteryLevel setTextColor:textColor];
+        [remainingTime setTextColor:textColor];
         
         [self addSubview:containView];
         
@@ -236,7 +259,7 @@ static void _logos_method$_ungrouped$SBLockScreenBatteryChargingView$layoutSubvi
     if (levelPercent == 100.0f) {
         chargingMsg = @"充电已完成！";
     }else if(!isCharging){
-        chargingMsg = @"请拔掉充电器";
+        chargingMsg = @"建议拔掉充电器";
     }else{
         chargingMsg = @"正在充电中...";
     }
@@ -246,17 +269,21 @@ static void _logos_method$_ungrouped$SBLockScreenBatteryChargingView$layoutSubvi
     int hour, min;
     NSString * timeMsg;
     
-    if (instantAmperage <= 0 ) {
-        timeMsg = @"充电已完成，请拔掉充电器。";
-    } else {
-        timeHour = ((float)maxCapacity  - currentCapacity) / instantAmperage;
-        hour = timeHour;
-        min = (timeHour - hour) * 60;
-        if (hour == 0) {
-            timeMsg = [NSString stringWithFormat:@"预计充电时间：%d分钟", min];
+    if(isCharging){
+        if(instantAmperage > 0){
+            timeHour = ((float)maxCapacity  - currentCapacity) / instantAmperage;
+            hour = timeHour;
+            min = (timeHour - hour) * 60;
+            if (hour == 0) {
+                timeMsg = [NSString stringWithFormat:@"预计充电时间：%d分钟", min];
+            }else{
+                timeMsg = [NSString stringWithFormat:@"预计充电时间：%d小时%d分钟", hour, min];
+            }
         }else{
-            timeMsg = [NSString stringWithFormat:@"预计充电时间：%d小时%d分钟", hour, min];
+            timeMsg = @"正在预估时间...";
         }
+    }else{
+        timeMsg = @"没有进行充电，建议拔掉充电器";
     }
     remainingTime.text = timeMsg;
 
@@ -281,4 +308,4 @@ static void _logos_method$_ungrouped$SBLockScreenBatteryChargingView$dealloc(SBL
 
 static __attribute__((constructor)) void _logosLocalInit() {
 {Class _logos_class$_ungrouped$SpringBoard = objc_getClass("SpringBoard"); MSHookMessageEx(_logos_class$_ungrouped$SpringBoard, @selector(batteryStatusDidChange:), (IMP)&_logos_method$_ungrouped$SpringBoard$batteryStatusDidChange$, (IMP*)&_logos_orig$_ungrouped$SpringBoard$batteryStatusDidChange$);Class _logos_class$_ungrouped$SBAwayChargingView = objc_getClass("SBAwayChargingView"); MSHookMessageEx(_logos_class$_ungrouped$SBAwayChargingView, @selector(addChargingView), (IMP)&_logos_method$_ungrouped$SBAwayChargingView$addChargingView, (IMP*)&_logos_orig$_ungrouped$SBAwayChargingView$addChargingView);MSHookMessageEx(_logos_class$_ungrouped$SBAwayChargingView, @selector(dealloc), (IMP)&_logos_method$_ungrouped$SBAwayChargingView$dealloc, (IMP*)&_logos_orig$_ungrouped$SBAwayChargingView$dealloc);Class _logos_class$_ungrouped$SBLockScreenBatteryChargingView = objc_getClass("SBLockScreenBatteryChargingView"); MSHookMessageEx(_logos_class$_ungrouped$SBLockScreenBatteryChargingView, @selector(layoutSubviews), (IMP)&_logos_method$_ungrouped$SBLockScreenBatteryChargingView$layoutSubviews, (IMP*)&_logos_orig$_ungrouped$SBLockScreenBatteryChargingView$layoutSubviews);MSHookMessageEx(_logos_class$_ungrouped$SBLockScreenBatteryChargingView, @selector(dealloc), (IMP)&_logos_method$_ungrouped$SBLockScreenBatteryChargingView$dealloc, (IMP*)&_logos_orig$_ungrouped$SBLockScreenBatteryChargingView$dealloc);} }
-#line 275 "/Users/zhao/Desktop/ChargingHelper/ChargingHelper/ChargingHelper.xm"
+#line 302 "/Users/Ming/Desktop/ChargingHelper/ChargingHelper/ChargingHelper.xm"

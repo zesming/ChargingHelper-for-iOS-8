@@ -19,7 +19,7 @@
 			<key>isStaticText</key>
 			<true/>
 			<key>label</key>
-			<string>开启重复提醒</string>
+			<string>设置开关</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -37,14 +37,6 @@
 		</dict>
 		<dict>
 			<key>cell</key>
-			<string>PSGroupCell</string>
-			<key>isStaticText</key>
-			<true/>
-			<key>label</key>
-			<string>开启提示声音</string>
-		</dict>
-		<dict>
-			<key>cell</key>
 			<string>PSSwitchCell</string>
 			<key>default</key>
 			<true/>
@@ -59,14 +51,6 @@
 		</dict>
 		<dict>
 			<key>cell</key>
-			<string>PSGroupCell</string>
-			<key>isStaticText</key>
-			<true/>
-			<key>label</key>
-			<string>开启提示振动</string>
-		</dict>
-		<dict>
-			<key>cell</key>
 			<string>PSSwitchCell</string>
 			<key>default</key>
 			<true/>
@@ -78,6 +62,46 @@
 			<string>振动</string>
 			<key>PostNotification</key>
 			<string>cn.ming.ChargingHelper-preferencesChanged</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>isStaticText</key>
+			<true/>
+			<key>label</key>
+			<string>锁屏文字颜色</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSLinkListCell</string>
+			<key>defaults</key>
+			<string>cn.ming.ChargingHelper</string>
+			<key>key</key>
+			<string>textColor</string>
+			<key>label</key>
+			<string>文字颜色</string>
+			<key>detail</key>
+			<string>PSListItemsController</string>
+			<key>validTitles</key>
+			<array>
+				<string>白色</string>
+				<string>黑色</string>
+			</array>
+			<key>validValues</key>
+			<array>
+				<integer>1</integer>
+				<integer>2</integer>
+			</array>
+			<key>default</key>
+			<integer>1</integer>
+			<key>PostNotification</key>
+			<string>cn.ming.ChargingHelper-preferencesChanged</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>footerText</key>
+			<string>文字颜色设置仅适用于iOS 7</string>
 		</dict>
 		<dict>
 			<key>cell</key>

@@ -140,7 +140,7 @@ UILabel *batteryLevel, *chargingStatus, *remainingTime;
     if (levelPercent == 100.0f) {
         chargingMsg = @"充电已完成！";
     }else if(!isCharging){
-        chargingMsg = @"请拔掉充电器";
+        chargingMsg = @"没有进行充电";
     }else{
         chargingMsg = @"正在充电中...";
     }
@@ -149,19 +149,23 @@ UILabel *batteryLevel, *chargingStatus, *remainingTime;
     float timeHour;
     int hour, min;
     NSString * timeMsg;
-    
-    if (instantAmperage <= 0 ) {
-        timeMsg = @"充电已完成，请拔掉充电器。";
-    } else {
-        timeHour = ((float)maxCapacity  - currentCapacity) / instantAmperage;
-        hour = timeHour;
-        min = (timeHour - hour) * 60;
-        if (hour == 0) {
-            timeMsg = [NSString stringWithFormat:@"预计充电时间：%d分钟", min];
+    if(isCharging){
+        if(instantAmperage > 0){
+            timeHour = ((float)maxCapacity  - currentCapacity) / instantAmperage;
+            hour = timeHour;
+            min = (timeHour - hour) * 60;
+            if (hour == 0) {
+                timeMsg = [NSString stringWithFormat:@"预计充电时间：%d分钟", min];
+            }else{
+                timeMsg = [NSString stringWithFormat:@"预计充电时间：%d小时%d分钟", hour, min];
+            }
         }else{
-            timeMsg = [NSString stringWithFormat:@"预计充电时间：%d小时%d分钟", hour, min];
+            timeMsg = @"正在预估时间...";
         }
+    }else{
+        timeMsg = @"没有进行充电，建议拔掉充电器";
     }
+    
     remainingTime.text = timeMsg;
 
 }
@@ -193,14 +197,14 @@ UILabel *batteryLevel, *chargingStatus, *remainingTime;
 {
     %orig;
     if(!isInited){
+        
         containView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 280, 30)];
-        containView.center = CGPointMake(160, 200);
+        containView.center = CGPointMake(160, 165);
         containView.backgroundColor = [UIColor clearColor];
         
         batteryLevel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 110, 30)];
         batteryLevel.font = [UIFont boldSystemFontOfSize:25];
         [batteryLevel setTextAlignment:NSTextAlignmentCenter];
-        [batteryLevel setTextColor:[UIColor blackColor]];
         batteryLevel.backgroundColor = [UIColor clearColor];
         [containView addSubview:batteryLevel];
         
@@ -212,9 +216,28 @@ UILabel *batteryLevel, *chargingStatus, *remainingTime;
         
         remainingTime = [[UILabel alloc] initWithFrame:CGRectMake(110, 15, 170, 15)];
         remainingTime.font = [UIFont systemFontOfSize:12];
-        [remainingTime setTextColor:[UIColor blackColor]];
+        
         remainingTime.backgroundColor = [UIColor clearColor];
         [containView addSubview:remainingTime];
+        
+        NSDictionary *preference = [[NSDictionary alloc] initWithContentsOfFile:@"/var/mobile/Library/Preferences/cn.ming.ChargingHelper.plist"];
+        int colorValue = [[preference objectForKey:@"textColor"] intValue];
+        [preference release];
+        
+        UIColor *textColor;
+        switch (colorValue) {
+            case 1:
+                textColor = [UIColor whiteColor];
+                break;
+            case 2:
+                textColor = [UIColor blackColor];
+                break;
+            default:
+                textColor = [UIColor whiteColor];
+                break;
+        }
+        [batteryLevel setTextColor:textColor];
+        [remainingTime setTextColor:textColor];
         
         [self addSubview:containView];
         
@@ -229,7 +252,7 @@ UILabel *batteryLevel, *chargingStatus, *remainingTime;
     if (levelPercent == 100.0f) {
         chargingMsg = @"充电已完成！";
     }else if(!isCharging){
-        chargingMsg = @"请拔掉充电器";
+        chargingMsg = @"建议拔掉充电器";
     }else{
         chargingMsg = @"正在充电中...";
     }
@@ -239,17 +262,21 @@ UILabel *batteryLevel, *chargingStatus, *remainingTime;
     int hour, min;
     NSString * timeMsg;
     
-    if (instantAmperage <= 0 ) {
-        timeMsg = @"充电已完成，请拔掉充电器。";
-    } else {
-        timeHour = ((float)maxCapacity  - currentCapacity) / instantAmperage;
-        hour = timeHour;
-        min = (timeHour - hour) * 60;
-        if (hour == 0) {
-            timeMsg = [NSString stringWithFormat:@"预计充电时间：%d分钟", min];
+    if(isCharging){
+        if(instantAmperage > 0){
+            timeHour = ((float)maxCapacity  - currentCapacity) / instantAmperage;
+            hour = timeHour;
+            min = (timeHour - hour) * 60;
+            if (hour == 0) {
+                timeMsg = [NSString stringWithFormat:@"预计充电时间：%d分钟", min];
+            }else{
+                timeMsg = [NSString stringWithFormat:@"预计充电时间：%d小时%d分钟", hour, min];
+            }
         }else{
-            timeMsg = [NSString stringWithFormat:@"预计充电时间：%d小时%d分钟", hour, min];
+            timeMsg = @"正在预估时间...";
         }
+    }else{
+        timeMsg = @"没有进行充电，建议拔掉充电器";
     }
     remainingTime.text = timeMsg;
 
