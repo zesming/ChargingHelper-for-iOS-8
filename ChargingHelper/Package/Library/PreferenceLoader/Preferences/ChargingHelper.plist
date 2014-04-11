@@ -19,19 +19,19 @@
 			<key>isStaticText</key>
 			<true/>
 			<key>label</key>
-			<string>开启振动</string>
+			<string>开启重复提醒</string>
 		</dict>
 		<dict>
 			<key>cell</key>
 			<string>PSSwitchCell</string>
 			<key>default</key>
-			<true/>
+			<false/>
 			<key>defaults</key>
 			<string>cn.ming.ChargingHelper</string>
 			<key>key</key>
-			<string>SwitchCell5</string>
+			<string>isRepeat</string>
 			<key>label</key>
-			<string>振动</string>
+			<string>重复提醒</string>
 			<key>PostNotification</key>
 			<string>cn.ming.ChargingHelper-preferencesChanged</string>
 		</dict>
@@ -41,49 +41,41 @@
 			<key>isStaticText</key>
 			<true/>
 			<key>label</key>
-			<string>选择提示音</string>
+			<string>开启提示声音</string>
 		</dict>
 		<dict>
 			<key>cell</key>
-			<string>PSLinkListCell</string>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<true/>
 			<key>defaults</key>
 			<string>cn.ming.ChargingHelper</string>
 			<key>key</key>
-			<string>LinkListCell7</string>
+			<string>isSound</string>
 			<key>label</key>
-			<string>提示音</string>
-			<key>detail</key>
-			<string>PSListItemsController</string>
-			<key>validTitles</key>
-			<array>
-				<string>提示音1</string>
-				<string>提示音2</string>
-				<string>提示音3</string>
-				<string>提示音4</string>
-				<string>提示音5</string>
-				<string>提示音6</string>
-				<string>提示音7</string>
-				<string>提示音8</string>
-				<string>提示音9</string>
-				<string>提示音10</string>
-				<string>提示音11</string>
-			</array>
-			<key>validValues</key>
-			<array>
-				<integer>1</integer>
-				<integer>2</integer>
-				<integer>3</integer>
-				<integer>4</integer>
-				<integer>5</integer>
-				<integer>6</integer>
-				<integer>7</integer>
-				<integer>8</integer>
-				<integer>9</integer>
-				<integer>10</integer>
-				<integer>11</integer>
-			</array>
+			<string>声音</string>
+			<key>PostNotification</key>
+			<string>cn.ming.ChargingHelper-preferencesChanged</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>isStaticText</key>
+			<true/>
+			<key>label</key>
+			<string>开启提示振动</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
 			<key>default</key>
-			<integer>1</integer>
+			<true/>
+			<key>defaults</key>
+			<string>cn.ming.ChargingHelper</string>
+			<key>key</key>
+			<string>isVibrate</string>
+			<key>label</key>
+			<string>振动</string>
 			<key>PostNotification</key>
 			<string>cn.ming.ChargingHelper-preferencesChanged</string>
 		</dict>
