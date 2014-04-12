@@ -29,7 +29,7 @@ BOOL isCharging;
         {
             if(alertFlag)
             {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"手机充电已完成，建议拔掉充电器" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"充电已完成" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
                 [alert show];
                 
                 [alert release];
@@ -44,7 +44,7 @@ BOOL isCharging;
             if(isSound)
             {
                 SystemSoundID sameViewSoundID;
-                NSString *thesoundFilePath = [NSString stringWithFormat:@"/System/Library/Audio/UISounds/Voicemail.caf"]; //音乐文件路径
+                NSString *thesoundFilePath = [NSString stringWithFormat:@"/System/Library/Audio/UISounds/alert_sound.wav"]; //音乐文件路径
                 CFURLRef thesoundURL = (CFURLRef)[NSURL fileURLWithPath:thesoundFilePath];
                 AudioServicesCreateSystemSoundID(thesoundURL, &sameViewSoundID);
                 //变量SoundID与URL对应
@@ -56,7 +56,7 @@ BOOL isCharging;
         {
             if(alertFlag)
             {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"手机充电已完成，建议拔掉充电器" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"充电已完成" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
                 [alert show];
                 
                 [alert release];
@@ -69,7 +69,7 @@ BOOL isCharging;
                 if(isSound)
                 {
                     SystemSoundID sameViewSoundID;
-                    NSString *thesoundFilePath = [NSString stringWithFormat:@"/System/Library/Audio/UISounds/Voicemail.caf"]; //音乐文件路径
+                    NSString *thesoundFilePath = [NSString stringWithFormat:@"/System/Library/Audio/UISounds/alert_sound.wav"]; //音乐文件路径
                     CFURLRef thesoundURL = (CFURLRef)[NSURL fileURLWithPath:thesoundFilePath];
                     AudioServicesCreateSystemSoundID(thesoundURL, &sameViewSoundID);
                     //变量SoundID与URL对应
@@ -97,7 +97,7 @@ BOOL isCharging;
 
 BOOL isInited = NO;
 UIView *containView;
-UILabel *batteryLevel, *chargingStatus, *remainingTime;
+UILabel *batteryLevel, *remainingTime;
 
 - (void)addChargingView
 {
@@ -105,24 +105,19 @@ UILabel *batteryLevel, *chargingStatus, *remainingTime;
     
     if(!isInited){
         containView = [[UIView alloc] initWithFrame:CGRectMake(0, 200, 280, 30)];
-        containView.center = CGPointMake(140, 210);
+        containView.center = CGPointMake(130, 210);
         containView.backgroundColor = [UIColor clearColor];
         
         batteryLevel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 110, 30)];
-        batteryLevel.font = [UIFont boldSystemFontOfSize:25];
+        batteryLevel.font = [UIFont systemFontOfSize:25];
         [batteryLevel setTextAlignment:NSTextAlignmentCenter];
         [batteryLevel setTextColor:[UIColor whiteColor]];
         batteryLevel.backgroundColor = [UIColor clearColor];
         [containView addSubview:batteryLevel];
         
-        chargingStatus = [[UILabel alloc] initWithFrame:CGRectMake(110, 0, 170, 15)];
-        chargingStatus.font = [UIFont systemFontOfSize:12];
-        [chargingStatus setTextColor:[UIColor orangeColor]];
-        chargingStatus.backgroundColor = [UIColor clearColor];
-        [containView addSubview:chargingStatus];
-        
-        remainingTime = [[UILabel alloc] initWithFrame:CGRectMake(110, 15, 170, 15)];
-        remainingTime.font = [UIFont systemFontOfSize:12];
+        remainingTime = [[UILabel alloc] initWithFrame:CGRectMake(110, 0, 170, 30)];
+        remainingTime.font = [UIFont systemFontOfSize:17];
+        [remainingTime setTextAlignment:NSTextAlignmentCenter];
         [remainingTime setTextColor:[UIColor whiteColor]];
         remainingTime.backgroundColor = [UIColor clearColor];
         [containView addSubview:remainingTime];
@@ -136,16 +131,6 @@ UILabel *batteryLevel, *chargingStatus, *remainingTime;
     
     batteryLevel.text = [NSString stringWithFormat:@"%.2f%%",levelPercent];
     
-    NSString *chargingMsg;
-    if (levelPercent == 100.0f) {
-        chargingMsg = @"充电已完成！";
-    }else if(!isCharging){
-        chargingMsg = @"没有进行充电";
-    }else{
-        chargingMsg = @"正在充电中...";
-    }
-    chargingStatus.text = chargingMsg;
-    
     float timeHour;
     int hour, min;
     NSString * timeMsg;
@@ -155,17 +140,18 @@ UILabel *batteryLevel, *chargingStatus, *remainingTime;
             hour = timeHour;
             min = (timeHour - hour) * 60;
             if (hour == 0) {
-                timeMsg = [NSString stringWithFormat:@"预计充电时间：%d分钟", min];
+                timeMsg = [NSString stringWithFormat:@"预计充电:%d分钟", min];
             }else{
-                timeMsg = [NSString stringWithFormat:@"预计充电时间：%d小时%d分钟", hour, min];
+                timeMsg = [NSString stringWithFormat:@"预计充电:%d小时%d分钟", hour, min];
             }
+        }else if(levelPercent == 100){
+            timeMsg = @"充电已完成！";
         }else{
             timeMsg = @"正在预估时间...";
         }
     }else{
-        timeMsg = @"没有进行充电，建议拔掉充电器";
+        timeMsg = @"未充电";
     }
-    
     remainingTime.text = timeMsg;
 
 }
@@ -173,11 +159,9 @@ UILabel *batteryLevel, *chargingStatus, *remainingTime;
 -(void)dealloc
 {
     [batteryLevel removeFromSuperview];
-    [chargingStatus removeFromSuperview];
     [remainingTime removeFromSuperview];
     [containView removeFromSuperview];
 
-    [chargingStatus release];
     [batteryLevel release];
     [remainingTime release];
     [containView release];
@@ -202,21 +186,9 @@ UILabel *batteryLevel, *chargingStatus, *remainingTime;
         containView.center = CGPointMake(160, 165);
         containView.backgroundColor = [UIColor clearColor];
         
-        batteryLevel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 110, 30)];
-        batteryLevel.font = [UIFont boldSystemFontOfSize:25];
-        [batteryLevel setTextAlignment:NSTextAlignmentCenter];
-        batteryLevel.backgroundColor = [UIColor clearColor];
-        [containView addSubview:batteryLevel];
-        
-        chargingStatus = [[UILabel alloc] initWithFrame:CGRectMake(110, 0, 170, 15)];
-        chargingStatus.font = [UIFont systemFontOfSize:12];
-        [chargingStatus setTextColor:[UIColor orangeColor]];
-        chargingStatus.backgroundColor = [UIColor clearColor];
-        [containView addSubview:chargingStatus];
-        
-        remainingTime = [[UILabel alloc] initWithFrame:CGRectMake(110, 15, 170, 15)];
-        remainingTime.font = [UIFont systemFontOfSize:12];
-        
+        remainingTime = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 280, 30)];
+        remainingTime.font = [UIFont systemFontOfSize:17];
+        [remainingTime setTextAlignment:NSTextAlignmentCenter];
         remainingTime.backgroundColor = [UIColor clearColor];
         [containView addSubview:remainingTime];
         
@@ -236,27 +208,12 @@ UILabel *batteryLevel, *chargingStatus, *remainingTime;
                 textColor = [UIColor whiteColor];
                 break;
         }
-        [batteryLevel setTextColor:textColor];
         [remainingTime setTextColor:textColor];
         
         [self addSubview:containView];
         
         isInited = YES;
     }
-    float currentLevel = ((float)currentCapacity/maxCapacity);
-    float levelPercent = currentLevel * 100;
-    
-    batteryLevel.text = [NSString stringWithFormat:@"%.2f%%",levelPercent];
-
-    NSString *chargingMsg;
-    if (levelPercent == 100.0f) {
-        chargingMsg = @"充电已完成！";
-    }else if(!isCharging){
-        chargingMsg = @"建议拔掉充电器";
-    }else{
-        chargingMsg = @"正在充电中...";
-    }
-    chargingStatus.text = chargingMsg;
     
     float timeHour;
     int hour, min;
@@ -268,28 +225,26 @@ UILabel *batteryLevel, *chargingStatus, *remainingTime;
             hour = timeHour;
             min = (timeHour - hour) * 60;
             if (hour == 0) {
-                timeMsg = [NSString stringWithFormat:@"预计充电时间：%d分钟", min];
+                timeMsg = [NSString stringWithFormat:@"预计充电:%d分钟", min];
             }else{
-                timeMsg = [NSString stringWithFormat:@"预计充电时间：%d小时%d分钟", hour, min];
+                timeMsg = [NSString stringWithFormat:@"预计充电:%d小时%d分钟", hour, min];
             }
+        }else if(currentCapacity == maxCapacity){
+            timeMsg = @"充电已完成！";
         }else{
             timeMsg = @"正在预估时间...";
         }
     }else{
-        timeMsg = @"没有进行充电，建议拔掉充电器";
+        timeMsg = @"未充电";
     }
     remainingTime.text = timeMsg;
 
 }
 -(void)dealloc
 {
-    [batteryLevel removeFromSuperview];
-    [chargingStatus removeFromSuperview];
     [remainingTime removeFromSuperview];
     [containView removeFromSuperview];
     
-    [chargingStatus release];
-    [batteryLevel release];
     [remainingTime release];
     [containView release];
     

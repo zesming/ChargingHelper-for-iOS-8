@@ -36,7 +36,7 @@ static void _logos_method$_ungrouped$SpringBoard$batteryStatusDidChange$(SpringB
         {
             if(alertFlag)
             {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"手机充电已完成，建议拔掉充电器" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"充电已完成" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
                 [alert show];
                 
                 [alert release];
@@ -51,7 +51,7 @@ static void _logos_method$_ungrouped$SpringBoard$batteryStatusDidChange$(SpringB
             if(isSound)
             {
                 SystemSoundID sameViewSoundID;
-                NSString *thesoundFilePath = [NSString stringWithFormat:@"/System/Library/Audio/UISounds/Voicemail.caf"]; 
+                NSString *thesoundFilePath = [NSString stringWithFormat:@"/System/Library/Audio/UISounds/alert_sound.wav"]; 
                 CFURLRef thesoundURL = (CFURLRef)[NSURL fileURLWithPath:thesoundFilePath];
                 AudioServicesCreateSystemSoundID(thesoundURL, &sameViewSoundID);
                 
@@ -63,7 +63,7 @@ static void _logos_method$_ungrouped$SpringBoard$batteryStatusDidChange$(SpringB
         {
             if(alertFlag)
             {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"手机充电已完成，建议拔掉充电器" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"充电已完成" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
                 [alert show];
                 
                 [alert release];
@@ -76,7 +76,7 @@ static void _logos_method$_ungrouped$SpringBoard$batteryStatusDidChange$(SpringB
                 if(isSound)
                 {
                     SystemSoundID sameViewSoundID;
-                    NSString *thesoundFilePath = [NSString stringWithFormat:@"/System/Library/Audio/UISounds/Voicemail.caf"]; 
+                    NSString *thesoundFilePath = [NSString stringWithFormat:@"/System/Library/Audio/UISounds/alert_sound.wav"]; 
                     CFURLRef thesoundURL = (CFURLRef)[NSURL fileURLWithPath:thesoundFilePath];
                     AudioServicesCreateSystemSoundID(thesoundURL, &sameViewSoundID);
                     
@@ -104,7 +104,7 @@ static void _logos_method$_ungrouped$SpringBoard$batteryStatusDidChange$(SpringB
 
 BOOL isInited = NO;
 UIView *containView;
-UILabel *batteryLevel, *chargingStatus, *remainingTime;
+UILabel *batteryLevel, *remainingTime;
 
 
 static void _logos_method$_ungrouped$SBAwayChargingView$addChargingView(SBAwayChargingView* self, SEL _cmd) {
@@ -112,24 +112,19 @@ static void _logos_method$_ungrouped$SBAwayChargingView$addChargingView(SBAwayCh
     
     if(!isInited){
         containView = [[UIView alloc] initWithFrame:CGRectMake(0, 200, 280, 30)];
-        containView.center = CGPointMake(140, 210);
+        containView.center = CGPointMake(130, 210);
         containView.backgroundColor = [UIColor clearColor];
         
         batteryLevel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 110, 30)];
-        batteryLevel.font = [UIFont boldSystemFontOfSize:25];
+        batteryLevel.font = [UIFont systemFontOfSize:25];
         [batteryLevel setTextAlignment:NSTextAlignmentCenter];
         [batteryLevel setTextColor:[UIColor whiteColor]];
         batteryLevel.backgroundColor = [UIColor clearColor];
         [containView addSubview:batteryLevel];
         
-        chargingStatus = [[UILabel alloc] initWithFrame:CGRectMake(110, 0, 170, 15)];
-        chargingStatus.font = [UIFont systemFontOfSize:12];
-        [chargingStatus setTextColor:[UIColor orangeColor]];
-        chargingStatus.backgroundColor = [UIColor clearColor];
-        [containView addSubview:chargingStatus];
-        
-        remainingTime = [[UILabel alloc] initWithFrame:CGRectMake(110, 15, 170, 15)];
-        remainingTime.font = [UIFont systemFontOfSize:12];
+        remainingTime = [[UILabel alloc] initWithFrame:CGRectMake(110, 0, 170, 30)];
+        remainingTime.font = [UIFont systemFontOfSize:17];
+        [remainingTime setTextAlignment:NSTextAlignmentCenter];
         [remainingTime setTextColor:[UIColor whiteColor]];
         remainingTime.backgroundColor = [UIColor clearColor];
         [containView addSubview:remainingTime];
@@ -143,16 +138,6 @@ static void _logos_method$_ungrouped$SBAwayChargingView$addChargingView(SBAwayCh
     
     batteryLevel.text = [NSString stringWithFormat:@"%.2f%%",levelPercent];
     
-    NSString *chargingMsg;
-    if (levelPercent == 100.0f) {
-        chargingMsg = @"充电已完成！";
-    }else if(!isCharging){
-        chargingMsg = @"没有进行充电";
-    }else{
-        chargingMsg = @"正在充电中...";
-    }
-    chargingStatus.text = chargingMsg;
-    
     float timeHour;
     int hour, min;
     NSString * timeMsg;
@@ -162,17 +147,18 @@ static void _logos_method$_ungrouped$SBAwayChargingView$addChargingView(SBAwayCh
             hour = timeHour;
             min = (timeHour - hour) * 60;
             if (hour == 0) {
-                timeMsg = [NSString stringWithFormat:@"预计充电时间：%d分钟", min];
+                timeMsg = [NSString stringWithFormat:@"预计充电:%d分钟", min];
             }else{
-                timeMsg = [NSString stringWithFormat:@"预计充电时间：%d小时%d分钟", hour, min];
+                timeMsg = [NSString stringWithFormat:@"预计充电:%d小时%d分钟", hour, min];
             }
+        }else if(levelPercent == 100){
+            timeMsg = @"充电已完成！";
         }else{
             timeMsg = @"正在预估时间...";
         }
     }else{
-        timeMsg = @"没有进行充电，建议拔掉充电器";
+        timeMsg = @"未充电";
     }
-    
     remainingTime.text = timeMsg;
 
 }
@@ -180,11 +166,9 @@ static void _logos_method$_ungrouped$SBAwayChargingView$addChargingView(SBAwayCh
 
 static void _logos_method$_ungrouped$SBAwayChargingView$dealloc(SBAwayChargingView* self, SEL _cmd) {
     [batteryLevel removeFromSuperview];
-    [chargingStatus removeFromSuperview];
     [remainingTime removeFromSuperview];
     [containView removeFromSuperview];
 
-    [chargingStatus release];
     [batteryLevel release];
     [remainingTime release];
     [containView release];
@@ -209,21 +193,9 @@ static void _logos_method$_ungrouped$SBLockScreenBatteryChargingView$layoutSubvi
         containView.center = CGPointMake(160, 165);
         containView.backgroundColor = [UIColor clearColor];
         
-        batteryLevel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 110, 30)];
-        batteryLevel.font = [UIFont boldSystemFontOfSize:25];
-        [batteryLevel setTextAlignment:NSTextAlignmentCenter];
-        batteryLevel.backgroundColor = [UIColor clearColor];
-        [containView addSubview:batteryLevel];
-        
-        chargingStatus = [[UILabel alloc] initWithFrame:CGRectMake(110, 0, 170, 15)];
-        chargingStatus.font = [UIFont systemFontOfSize:12];
-        [chargingStatus setTextColor:[UIColor orangeColor]];
-        chargingStatus.backgroundColor = [UIColor clearColor];
-        [containView addSubview:chargingStatus];
-        
-        remainingTime = [[UILabel alloc] initWithFrame:CGRectMake(110, 15, 170, 15)];
-        remainingTime.font = [UIFont systemFontOfSize:12];
-        
+        remainingTime = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 280, 30)];
+        remainingTime.font = [UIFont systemFontOfSize:17];
+        [remainingTime setTextAlignment:NSTextAlignmentCenter];
         remainingTime.backgroundColor = [UIColor clearColor];
         [containView addSubview:remainingTime];
         
@@ -243,27 +215,12 @@ static void _logos_method$_ungrouped$SBLockScreenBatteryChargingView$layoutSubvi
                 textColor = [UIColor whiteColor];
                 break;
         }
-        [batteryLevel setTextColor:textColor];
         [remainingTime setTextColor:textColor];
         
         [self addSubview:containView];
         
         isInited = YES;
     }
-    float currentLevel = ((float)currentCapacity/maxCapacity);
-    float levelPercent = currentLevel * 100;
-    
-    batteryLevel.text = [NSString stringWithFormat:@"%.2f%%",levelPercent];
-
-    NSString *chargingMsg;
-    if (levelPercent == 100.0f) {
-        chargingMsg = @"充电已完成！";
-    }else if(!isCharging){
-        chargingMsg = @"建议拔掉充电器";
-    }else{
-        chargingMsg = @"正在充电中...";
-    }
-    chargingStatus.text = chargingMsg;
     
     float timeHour;
     int hour, min;
@@ -275,28 +232,26 @@ static void _logos_method$_ungrouped$SBLockScreenBatteryChargingView$layoutSubvi
             hour = timeHour;
             min = (timeHour - hour) * 60;
             if (hour == 0) {
-                timeMsg = [NSString stringWithFormat:@"预计充电时间：%d分钟", min];
+                timeMsg = [NSString stringWithFormat:@"预计充电:%d分钟", min];
             }else{
-                timeMsg = [NSString stringWithFormat:@"预计充电时间：%d小时%d分钟", hour, min];
+                timeMsg = [NSString stringWithFormat:@"预计充电:%d小时%d分钟", hour, min];
             }
+        }else if(currentCapacity == maxCapacity){
+            timeMsg = @"充电已完成！";
         }else{
             timeMsg = @"正在预估时间...";
         }
     }else{
-        timeMsg = @"没有进行充电，建议拔掉充电器";
+        timeMsg = @"未充电";
     }
     remainingTime.text = timeMsg;
 
 }
 
 static void _logos_method$_ungrouped$SBLockScreenBatteryChargingView$dealloc(SBLockScreenBatteryChargingView* self, SEL _cmd) {
-    [batteryLevel removeFromSuperview];
-    [chargingStatus removeFromSuperview];
     [remainingTime removeFromSuperview];
     [containView removeFromSuperview];
     
-    [chargingStatus release];
-    [batteryLevel release];
     [remainingTime release];
     [containView release];
     
@@ -308,4 +263,4 @@ static void _logos_method$_ungrouped$SBLockScreenBatteryChargingView$dealloc(SBL
 
 static __attribute__((constructor)) void _logosLocalInit() {
 {Class _logos_class$_ungrouped$SpringBoard = objc_getClass("SpringBoard"); MSHookMessageEx(_logos_class$_ungrouped$SpringBoard, @selector(batteryStatusDidChange:), (IMP)&_logos_method$_ungrouped$SpringBoard$batteryStatusDidChange$, (IMP*)&_logos_orig$_ungrouped$SpringBoard$batteryStatusDidChange$);Class _logos_class$_ungrouped$SBAwayChargingView = objc_getClass("SBAwayChargingView"); MSHookMessageEx(_logos_class$_ungrouped$SBAwayChargingView, @selector(addChargingView), (IMP)&_logos_method$_ungrouped$SBAwayChargingView$addChargingView, (IMP*)&_logos_orig$_ungrouped$SBAwayChargingView$addChargingView);MSHookMessageEx(_logos_class$_ungrouped$SBAwayChargingView, @selector(dealloc), (IMP)&_logos_method$_ungrouped$SBAwayChargingView$dealloc, (IMP*)&_logos_orig$_ungrouped$SBAwayChargingView$dealloc);Class _logos_class$_ungrouped$SBLockScreenBatteryChargingView = objc_getClass("SBLockScreenBatteryChargingView"); MSHookMessageEx(_logos_class$_ungrouped$SBLockScreenBatteryChargingView, @selector(layoutSubviews), (IMP)&_logos_method$_ungrouped$SBLockScreenBatteryChargingView$layoutSubviews, (IMP*)&_logos_orig$_ungrouped$SBLockScreenBatteryChargingView$layoutSubviews);MSHookMessageEx(_logos_class$_ungrouped$SBLockScreenBatteryChargingView, @selector(dealloc), (IMP)&_logos_method$_ungrouped$SBLockScreenBatteryChargingView$dealloc, (IMP*)&_logos_orig$_ungrouped$SBLockScreenBatteryChargingView$dealloc);} }
-#line 302 "/Users/Ming/Desktop/ChargingHelper/ChargingHelper/ChargingHelper.xm"
+#line 257 "/Users/Ming/Desktop/ChargingHelper/ChargingHelper/ChargingHelper.xm"
