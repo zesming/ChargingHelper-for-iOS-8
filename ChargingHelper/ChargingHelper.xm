@@ -135,7 +135,7 @@ UILabel *batteryLevel, *remainingTime;
     int hour, min;
     NSString * timeMsg;
     if(isCharging){
-        if(instantAmperage > 0){
+        if(levelPercent < 100 && instantAmperage > 0){
             timeHour = ((float)maxCapacity  - currentCapacity) / instantAmperage;
             hour = timeHour;
             min = (timeHour - hour) * 60;
@@ -220,7 +220,7 @@ UILabel *batteryLevel, *remainingTime;
     NSString * timeMsg;
     
     if(isCharging){
-        if(instantAmperage > 0){
+        if(currentCapacity < maxCapacity && instantAmperage > 0){
             timeHour = ((float)maxCapacity  - currentCapacity) / instantAmperage;
             hour = timeHour;
             min = (timeHour - hour) * 60;
