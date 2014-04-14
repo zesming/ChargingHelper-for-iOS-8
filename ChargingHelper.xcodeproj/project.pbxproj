@@ -30,7 +30,9 @@
 		FE56F2E618F62E13007475D6 /* libsubstrate.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libsubstrate.dylib; sourceTree = "<group>"; };
 		FE56F2E818F62E1D007475D6 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		FE56F2EA18F62E24007475D6 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
-		FEE1E3AA18F7803B00CBC3F8 /* cn.ming.ChargingHelper.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; name = cn.ming.ChargingHelper.plist; path = Package/var/mobile/Library/Preferences/cn.ming.ChargingHelper.plist; sourceTree = "<group>"; };
+		FEA9BB3B18FBD9BA00BEFFA0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/ChargingHelper.strings; sourceTree = "<group>"; };
+		FEA9BB3D18FBD9C800BEFFA0 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/ChargingHelper.strings"; sourceTree = "<group>"; };
+		FEA9BB3F18FBDBDB00BEFFA0 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/ChargingHelper.strings"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,7 +92,6 @@
 		FE56F2CE18F62DFC007475D6 /* Package */ = {
 			isa = PBXGroup;
 			children = (
-				FEE1E3A618F77F1900CBC3F8 /* var */,
 				FE56F2CF18F62DFC007475D6 /* DEBIAN */,
 				FE56F2D418F62DFC007475D6 /* Library */,
 			);
@@ -138,6 +139,7 @@
 				FE56F2D718F62DFC007475D6 /* ChargingHelper.plist */,
 				FE56F2D818F62DFC007475D6 /* ChargingHelperIcon.png */,
 				FE56F2D918F62DFC007475D6 /* ChargingHelperIcon@2x.png */,
+				FEA9BB3C18FBD9BA00BEFFA0 /* ChargingHelper.strings */,
 			);
 			name = Preferences;
 			sourceTree = "<group>";
@@ -156,38 +158,6 @@
 				FE56F2E018F62DFC007475D6 /* ChargingHelper.plist */,
 			);
 			name = DynamicLibraries;
-			sourceTree = "<group>";
-		};
-		FEE1E3A618F77F1900CBC3F8 /* var */ = {
-			isa = PBXGroup;
-			children = (
-				FEE1E3A718F77F2900CBC3F8 /* mobile */,
-			);
-			name = var;
-			sourceTree = "<group>";
-		};
-		FEE1E3A718F77F2900CBC3F8 /* mobile */ = {
-			isa = PBXGroup;
-			children = (
-				FEE1E3A818F77F5F00CBC3F8 /* Library */,
-			);
-			name = mobile;
-			sourceTree = "<group>";
-		};
-		FEE1E3A818F77F5F00CBC3F8 /* Library */ = {
-			isa = PBXGroup;
-			children = (
-				FEE1E3A918F77F7700CBC3F8 /* Preferences */,
-			);
-			name = Library;
-			sourceTree = "<group>";
-		};
-		FEE1E3A918F77F7700CBC3F8 /* Preferences */ = {
-			isa = PBXGroup;
-			children = (
-				FEE1E3AA18F7803B00CBC3F8 /* cn.ming.ChargingHelper.plist */,
-			);
-			name = Preferences;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -236,6 +206,8 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				"zh-Hans",
+				"zh-Hant",
 			);
 			mainGroup = FE56F2BD18F62DFC007475D6;
 			productRefGroup = FE56F2C918F62DFC007475D6 /* Products */;
@@ -286,6 +258,20 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		FEA9BB3C18FBD9BA00BEFFA0 /* ChargingHelper.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FEA9BB3B18FBD9BA00BEFFA0 /* en */,
+				FEA9BB3D18FBD9C800BEFFA0 /* zh-Hans */,
+				FEA9BB3F18FBDBDB00BEFFA0 /* zh-Hant */,
+			);
+			name = ChargingHelper.strings;
+			path = Package/Library/PreferenceLoader/Preferences;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		FE56F2E118F62DFC007475D6 /* Debug */ = {

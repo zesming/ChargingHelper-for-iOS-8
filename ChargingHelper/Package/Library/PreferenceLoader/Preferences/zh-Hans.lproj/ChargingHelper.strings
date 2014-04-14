@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>General</key>
+	<string>设置开关</string>
+	<key>Repeat Alerts</key>
+	<string>重复提醒</string>
+	<key>Ring</key>
+	<string>声音提示</string>
+	<key>Vibrate</key>
+	<string>振动提示</string>
+	<key>Lock Screen Font Color</key>
+	<string>锁屏字体颜色</string>
+	<key>Font Color</key>
+	<string>字体颜色颜色</string>
+	<key>White</key>
+	<string>白色</string>
+	<key>Black</key>
+	<string>黑色</string>
+    <key>The "Font Color" setting works on iOS 7 only.</key>
+    <string>字体颜色设置仅适用于iOS 7</string>
+</dict>
+</plist>
