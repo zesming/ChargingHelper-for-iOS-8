@@ -39,7 +39,7 @@
 			<key>cell</key>
 			<string>PSSwitchCell</string>
 			<key>default</key>
-			<true/>
+			<false/>
 			<key>defaults</key>
 			<string>cn.ming.ChargingHelper</string>
 			<key>key</key>
@@ -53,7 +53,7 @@
 			<key>cell</key>
 			<string>PSSwitchCell</string>
 			<key>default</key>
-			<true/>
+			<false/>
 			<key>defaults</key>
 			<string>cn.ming.ChargingHelper</string>
 			<key>key</key>
