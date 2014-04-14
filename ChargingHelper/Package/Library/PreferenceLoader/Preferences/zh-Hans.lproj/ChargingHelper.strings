@@ -15,7 +15,7 @@
 	<key>Lock Screen Font Color</key>
 	<string>锁屏字体颜色</string>
 	<key>Font Color</key>
-	<string>字体颜色颜色</string>
+	<string>字体颜色</string>
 	<key>White</key>
 	<string>白色</string>
 	<key>Black</key>
