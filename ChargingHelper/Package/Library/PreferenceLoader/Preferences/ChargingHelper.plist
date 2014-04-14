@@ -43,6 +43,20 @@
 			<key>defaults</key>
 			<string>cn.ming.ChargingHelper</string>
 			<key>key</key>
+			<string>isPopAlert</string>
+			<key>label</key>
+			<string>Pop Alert</string>
+			<key>PostNotification</key>
+			<string>cn.ming.ChargingHelper-preferencesChanged</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>cn.ming.ChargingHelper</string>
+			<key>key</key>
 			<string>isSound</string>
 			<key>label</key>
 			<string>Ring</string>

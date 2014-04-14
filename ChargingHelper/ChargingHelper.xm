@@ -22,6 +22,7 @@ BOOL isCharging;
         /* Load the Preferences */
         NSDictionary *preference = [[NSDictionary alloc] initWithContentsOfFile:@"/var/mobile/Library/Preferences/cn.ming.ChargingHelper.plist"];
         BOOL isRepeat = [[preference objectForKey:@"isRepeat"]boolValue];
+        BOOL isPopAlert = [[preference objectForKey:@"isPopAlert"]boolValue];
         BOOL isVibrate = [[preference objectForKey:@"isVibrate"] boolValue];
         BOOL isSound = [[preference objectForKey:@"isSound"] boolValue];
         [preference release];
@@ -47,7 +48,7 @@ BOOL isCharging;
         
         if(isRepeat)
         {
-            if(alertFlag)
+            if(alertFlag && isPopAlert)
             {
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:msg delegate:nil cancelButtonTitle:cbButton otherButtonTitles:nil];
                 [alert show];
@@ -76,10 +77,13 @@ BOOL isCharging;
         {
             if(alertFlag)
             {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:msg delegate:nil cancelButtonTitle:cbButton otherButtonTitles:nil];
-                [alert show];
-                
-                [alert release];
+                if(isPopAlert)
+                {
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:msg delegate:nil cancelButtonTitle:cbButton otherButtonTitles:nil];
+                    [alert show];
+                    
+                    [alert release];
+                }
                 if(isVibrate)
                 {
                     SystemSoundID vibrate;

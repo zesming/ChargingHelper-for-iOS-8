@@ -6,6 +6,8 @@
 	<string>设置开关</string>
 	<key>Repeat Alerts</key>
 	<string>重复提醒</string>
+    <key>Pop Alert</key>
+    <string>弹窗提示</string>
 	<key>Ring</key>
 	<string>声音提示</string>
 	<key>Vibrate</key>
