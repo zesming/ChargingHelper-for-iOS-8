@@ -347,7 +347,7 @@ UILabel *batteryLevel, *remainingTime;
 -(void)initChargingTextView
 {
     containView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 30)];
-    containView.center = CGPointMake(160, 165);
+    containView.center = CGPointMake(160, 160);
     containView.backgroundColor = [UIColor clearColor];
     
     remainingTime = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 320, 30)];
