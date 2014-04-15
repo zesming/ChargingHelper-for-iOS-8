@@ -4,14 +4,16 @@
 <dict>
 	<key>General</key>
 	<string>設置開關</string>
+    <key>If the reminder is not in accordance with your settings, please re-open or re-close the switch.</key>
+    <string>如果這個插件的提醒方式没有依照你的設置，請重新打開或者重新關上開關。</string>
 	<key>Repeat Alerts</key>
 	<string>重復提醒</string>
     <key>Pop Alert</key>
     <string>彈窗提示</string>
 	<key>Ring</key>
-	<string>聲音提醒</string>
+	<string>聲音提示</string>
 	<key>Vibrate</key>
-	<string>振動提醒</string>
+	<string>振動提示</string>
 	<key>Lock Screen Font Color</key>
 	<string>鎖屏字體顏色</string>
 	<key>Font Color</key>

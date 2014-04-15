@@ -2,25 +2,27 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-<key>General</key>
-<string>General</string>
-<key>Repeat Alerts</key>
-<string>Repeat Alerts</string>
-<key>Pop Alert</key>
-<string>Pop Alert</string>
-<key>Ring</key>
-<string>Ring</string>
-<key>Vibrate</key>
-<string>Vibrate</string>
-<key>Lock Screen Font Color</key>
-<string>Lock Screen Font Color</string>
-<key>Font Color</key>
-<string>Font Color</string>
-<key>White</key>
-<string>White</string>
-<key>Black</key>
-<string>Black</string>
-<key>The "Font Color" setting works on iOS 7 only.</key>
-<string>The "Font Color" setting works on iOS 7 only.</string>
+    <key>General</key>
+    <string>General</string>
+    <key>If the reminder is not in accordance with your settings, please re-open or re-close the switch.</key>
+    <string>If the reminder is not in accordance with your settings, please re-open or re-close the switch.</string>
+    <key>Repeat Alerts</key>
+    <string>Repeat Alerts</string>
+    <key>Pop Alert</key>
+    <string>Pop Alert</string>
+    <key>Ring</key>
+    <string>Ring</string>
+    <key>Vibrate</key>
+    <string>Vibrate</string>
+    <key>Lock Screen Font Color</key>
+    <string>Lock Screen Font Color</string>
+    <key>Font Color</key>
+    <string>Font Color</string>
+    <key>White</key>
+    <string>White</string>
+    <key>Black</key>
+    <string>Black</string>
+    <key>The "Font Color" setting works on iOS 7 only.</key>
+    <string>The "Font Color" setting works on iOS 7 only.</string>
 </dict>
 </plist>

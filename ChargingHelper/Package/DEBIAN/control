@@ -1,6 +1,6 @@
 Package: cn.ming.ChargingHelper
 Name: ChargingHelper
-Version: 0.3.7-1
+Version: 0.3.7-2
 Description: 
 Section: System
 Depends: firmware (>= 6.0), mobilesubstrate

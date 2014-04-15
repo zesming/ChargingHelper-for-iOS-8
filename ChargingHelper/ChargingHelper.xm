@@ -4,10 +4,16 @@
 int currentCapacity, maxCapacity, instantAmperage;
 BOOL isCharging;
 
+@interface SpringBoard : UIApplication
+-(void)popAlertView;
+-(void)playVibrate;
+-(void)playSound;
+@end
+
 %hook SpringBoard
 - (void)batteryStatusDidChange:(id)batteryStatus
 {
-	currentCapacity = [[batteryStatus objectForKey:@"CurrentCapacity"] intValue]; //1352
+	currentCapacity = [[batteryStatus objectForKey:@"CurrentCapacity"] intValue];
     maxCapacity = [[batteryStatus objectForKey:@"MaxCapacity"] intValue];
     instantAmperage = [[batteryStatus objectForKey:@"InstantAmperage"] intValue];
     isCharging = [[batteryStatus objectForKey:@"IsCharging"]boolValue];
@@ -27,49 +33,20 @@ BOOL isCharging;
         BOOL isSound = [[preference objectForKey:@"isSound"] boolValue];
         [preference release];
         
-        /* check the os language */
-        NSArray *languages = [NSLocale preferredLanguages];
-        NSString *currentLanguage = [languages objectAtIndex:0];
-        NSString *title, *msg, *cbButton;
-        
-        if ([currentLanguage isEqualToString:@"zh-Hans"]) {
-            title = @"提示";
-            msg = @"充电已完成";
-            cbButton = @"确定";
-        }else if([currentLanguage isEqualToString:@"zh-Hant"]){
-            title = @"提示";
-            msg = @"充電已完成";
-            cbButton = @"好";
-        }else{
-            title = @"Message";
-            msg = @"Charging is complete";
-            cbButton = @"OK";
-        }
-        
         if(isRepeat)
         {
             if(alertFlag && isPopAlert)
             {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:msg delegate:nil cancelButtonTitle:cbButton otherButtonTitles:nil];
-                [alert show];
-                
-                [alert release];
+                [self popAlertView];
                 alertFlag = NO;
             }
             if(isVibrate)
             {
-                SystemSoundID vibrate;
-                vibrate = kSystemSoundID_Vibrate;
-                AudioServicesPlaySystemSound(vibrate);
+                [self playVibrate];
             }
             if(isSound)
             {
-                SystemSoundID sameViewSoundID;
-                NSString *thesoundFilePath = [NSString stringWithFormat:@"/System/Library/Audio/UISounds/alert_sound.wav"]; //音乐文件路径
-                CFURLRef thesoundURL = (CFURLRef)[NSURL fileURLWithPath:thesoundFilePath];
-                AudioServicesCreateSystemSoundID(thesoundURL, &sameViewSoundID);
-                //变量SoundID与URL对应
-                AudioServicesPlaySystemSound(sameViewSoundID); //播放SoundID声音
+                [self playSound];
             }
             
         }
@@ -79,25 +56,15 @@ BOOL isCharging;
             {
                 if(isPopAlert)
                 {
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:msg delegate:nil cancelButtonTitle:cbButton otherButtonTitles:nil];
-                    [alert show];
-                    
-                    [alert release];
+                    [self popAlertView];
                 }
                 if(isVibrate)
                 {
-                    SystemSoundID vibrate;
-                    vibrate = kSystemSoundID_Vibrate;
-                    AudioServicesPlaySystemSound(vibrate);
+                    [self playVibrate];
                 }
                 if(isSound)
                 {
-                    SystemSoundID sameViewSoundID;
-                    NSString *thesoundFilePath = [NSString stringWithFormat:@"/System/Library/Audio/UISounds/alert_sound.wav"]; //音乐文件路径
-                    CFURLRef thesoundURL = (CFURLRef)[NSURL fileURLWithPath:thesoundFilePath];
-                    AudioServicesCreateSystemSoundID(thesoundURL, &sameViewSoundID);
-                    //变量SoundID与URL对应
-                    AudioServicesPlaySystemSound(sameViewSoundID); //播放SoundID声音
+                    [self playSound];
                 }
                 alertFlag = NO;
             }
@@ -114,40 +81,70 @@ BOOL isCharging;
 	%orig;
 }
 
+%new
+-(void)popAlertView
+{
+    /* check the os language */
+    NSArray *languages = [NSLocale preferredLanguages];
+    NSString *currentLanguage = [languages objectAtIndex:0];
+    NSString *title, *msg, *cbButton;
+    
+    if ([currentLanguage isEqualToString:@"zh-Hans"]) {
+        title = @"提示";
+        msg = @"充电已完成";
+        cbButton = @"确定";
+    }else if([currentLanguage isEqualToString:@"zh-Hant"]){
+        title = @"提示";
+        msg = @"充電已完成";
+        cbButton = @"好";
+    }else{
+        title = @"Message";
+        msg = @"Charging is complete";
+        cbButton = @"OK";
+    }
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:msg delegate:nil cancelButtonTitle:cbButton otherButtonTitles:nil];
+    [alert show];
+    [alert release];
+}
+
+%new
+-(void)playVibrate
+{
+    SystemSoundID vibrate;
+    vibrate = kSystemSoundID_Vibrate;
+    AudioServicesPlaySystemSound(vibrate);
+}
+
+%new
+-(void)playSound
+{
+    SystemSoundID sameViewSoundID;
+    NSString *thesoundFilePath = [NSString stringWithFormat:@"/System/Library/Audio/UISounds/alert_sound.wav"]; //音乐文件路径
+    CFURLRef thesoundURL = (CFURLRef)[NSURL fileURLWithPath:thesoundFilePath];
+    AudioServicesCreateSystemSoundID(thesoundURL, &sameViewSoundID);
+    //变量SoundID与URL对应
+    AudioServicesPlaySystemSound(sameViewSoundID); //播放SoundID声音
+}
+
 %end
 
 /* When the Firmware <= iOS 6, use SBAwayChaingView */
-%hook SBAwayChargingView
 
+@interface SBAwayChargingView : UIView
+-(void)initChargingTextView;
+@end
+
+%hook SBAwayChargingView
 BOOL isInited = NO;
 UIView *containView;
 UILabel *batteryLevel, *remainingTime;
-
 - (void)addChargingView
 {
     %orig;
     
     if(!isInited){
-        containView = [[UIView alloc] initWithFrame:CGRectMake(0, 200, 280, 60)];
-        containView.center = CGPointMake(130, 210);
-        containView.backgroundColor = [UIColor clearColor];
-        
-        batteryLevel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 280, 30)];
-        batteryLevel.font = [UIFont systemFontOfSize:25];
-        [batteryLevel setTextAlignment:NSTextAlignmentCenter];
-        [batteryLevel setTextColor:[UIColor whiteColor]];
-        batteryLevel.backgroundColor = [UIColor clearColor];
-        [containView addSubview:batteryLevel];
-        
-        remainingTime = [[UILabel alloc] initWithFrame:CGRectMake(0, 30, 280, 30)];
-        remainingTime.font = [UIFont systemFontOfSize:17];
-        [remainingTime setTextAlignment:NSTextAlignmentCenter];
-        [remainingTime setTextColor:[UIColor whiteColor]];
-        remainingTime.backgroundColor = [UIColor clearColor];
-        [containView addSubview:remainingTime];
-        
-        [self addSubview:containView];
-        
+        [self initChargingTextView];
         isInited = YES;
     }
     float currentLevel = ((float)currentCapacity/maxCapacity);
@@ -221,28 +218,43 @@ UILabel *batteryLevel, *remainingTime;
     %orig;
 }
 
+%new
+-(void)initChargingTextView
+{
+    containView = [[UIView alloc] initWithFrame:CGRectMake(0, 200, 280, 60)];
+    containView.center = CGPointMake(130, 210);
+    containView.backgroundColor = [UIColor clearColor];
+    
+    batteryLevel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 280, 30)];
+    batteryLevel.font = [UIFont systemFontOfSize:25];
+    [batteryLevel setTextAlignment:NSTextAlignmentCenter];
+    [batteryLevel setTextColor:[UIColor whiteColor]];
+    batteryLevel.backgroundColor = [UIColor clearColor];
+    [containView addSubview:batteryLevel];
+    
+    remainingTime = [[UILabel alloc] initWithFrame:CGRectMake(0, 30, 280, 30)];
+    remainingTime.font = [UIFont systemFontOfSize:17];
+    [remainingTime setTextAlignment:NSTextAlignmentCenter];
+    [remainingTime setTextColor:[UIColor whiteColor]];
+    remainingTime.backgroundColor = [UIColor clearColor];
+    [containView addSubview:remainingTime];
+    
+    [self addSubview:containView];
+}
 %end
-
 
 /* When the Firmware > iOS 7, use SBLockScreenBatteryChargingView */
 
-%hook SBLockScreenBatteryChargingView
+@interface SBLockScreenBatteryChargingView : UIView
+-(void)initChargingTextView;
+@end
 
+%hook SBLockScreenBatteryChargingView
 - (void)layoutSubviews
 {
     %orig;
     if(!isInited){
-        
-        containView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 30)];
-        containView.center = CGPointMake(160, 165);
-        containView.backgroundColor = [UIColor clearColor];
-        
-        remainingTime = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 320, 30)];
-        remainingTime.font = [UIFont systemFontOfSize:17];
-        [remainingTime setTextAlignment:NSTextAlignmentCenter];
-        remainingTime.backgroundColor = [UIColor clearColor];
-        [containView addSubview:remainingTime];
-        
+        [self initChargingTextView];
         NSDictionary *preference = [[NSDictionary alloc] initWithContentsOfFile:@"/var/mobile/Library/Preferences/cn.ming.ChargingHelper.plist"];
         int colorValue = [[preference objectForKey:@"textColor"] intValue];
         [preference release];
@@ -316,6 +328,7 @@ UILabel *batteryLevel, *remainingTime;
     }
     remainingTime.text = timeMsg;
 
+
 }
 -(void)dealloc
 {
@@ -330,4 +343,17 @@ UILabel *batteryLevel, *remainingTime;
     %orig;
 }
 
+%new
+-(void)initChargingTextView
+{
+    containView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 30)];
+    containView.center = CGPointMake(160, 165);
+    containView.backgroundColor = [UIColor clearColor];
+    
+    remainingTime = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 320, 30)];
+    remainingTime.font = [UIFont systemFontOfSize:17];
+    [remainingTime setTextAlignment:NSTextAlignmentCenter];
+    remainingTime.backgroundColor = [UIColor clearColor];
+    [containView addSubview:remainingTime];
+}
 %end
