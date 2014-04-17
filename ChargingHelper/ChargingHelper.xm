@@ -8,22 +8,37 @@ BOOL isCharging;
 -(void)popAlertView;
 -(void)playVibrate;
 -(void)playSound;
+-(void)recordChargingLog;
 @end
 
 %hook SpringBoard
+
+//create a dic to record charging status
+NSMutableDictionary *mutableLog = [NSMutableDictionary dictionary];
+NSDictionary *batteryStatusDic, *dicLog;
+
 - (void)batteryStatusDidChange:(id)batteryStatus
 {
 	currentCapacity = [[batteryStatus objectForKey:@"CurrentCapacity"] intValue];
     maxCapacity = [[batteryStatus objectForKey:@"MaxCapacity"] intValue];
     instantAmperage = [[batteryStatus objectForKey:@"InstantAmperage"] intValue];
     isCharging = [[batteryStatus objectForKey:@"IsCharging"]boolValue];
+    BOOL fullyCharged = [[batteryStatus objectForKey:@"FullyCharged"] boolValue];
+    
+    /***********************************************
+     record the charging status,
+     it can be removed if you don't want to use it. 
+     ***********************************************/
+    if (isCharging || fullyCharged){
+        [self recordChargingLog];
+    }
 
     static BOOL alertFlag = YES;
     
     /* check the charging is complete or not. */
     if(currentCapacity == maxCapacity && isCharging)
     {
-        [batteryStatus writeToFile:@"/tmp/a.plist" atomically:YES];
+        //[batteryStatus writeToFile:@"/tmp/a.plist" atomically:YES];
         
         /* Load the Preferences */
         NSDictionary *preference = [[NSDictionary alloc] initWithContentsOfFile:@"/var/mobile/Library/Preferences/cn.ming.ChargingHelper.plist"];
@@ -103,6 +118,7 @@ BOOL isCharging;
         cbButton = @"OK";
     }
     
+    //pop the alert view
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:msg delegate:nil cancelButtonTitle:cbButton otherButtonTitles:nil];
     [alert show];
     [alert release];
@@ -120,13 +136,62 @@ BOOL isCharging;
 -(void)playSound
 {
     SystemSoundID sameViewSoundID;
-    NSString *thesoundFilePath = [NSString stringWithFormat:@"/System/Library/Audio/UISounds/alert_sound.wav"]; //音乐文件路径
+    NSString *thesoundFilePath = [NSString stringWithFormat:@"/System/Library/Audio/UISounds/alert_sound.wav"]; //the path of sound file.
     CFURLRef thesoundURL = (CFURLRef)[NSURL fileURLWithPath:thesoundFilePath];
-    AudioServicesCreateSystemSoundID(thesoundURL, &sameViewSoundID);
-    //变量SoundID与URL对应
-    AudioServicesPlaySystemSound(sameViewSoundID); //播放SoundID声音
+    AudioServicesCreateSystemSoundID(thesoundURL, &sameViewSoundID);//create the ID of sound
+    AudioServicesPlaySystemSound(sameViewSoundID); //play SoundID's sound
 }
 
+%new
+
+/* a method to record the charging status */
+-(void)recordChargingLog
+{
+    //battery level
+    float batteryLevel = ((float)currentCapacity /maxCapacity) * 100;
+    
+    //now date
+    NSDate *date = [NSDate date];
+    NSString *now;
+    now = [NSString stringWithFormat:@"%@", date];
+    
+    //is fully charged
+    BOOL fullyCharged = [[batteryStatusDic objectForKey:@"FullyCharged"] boolValue];
+    
+    //remaining time
+    float timeHour;
+    int hour, min;
+    NSString *timeMsg;
+    if(isCharging){
+        if(batteryLevel < 100 && instantAmperage > 0){
+            timeHour = ((float)maxCapacity  - currentCapacity) / instantAmperage;
+            hour = timeHour;
+            min = (timeHour - hour) * 60;
+            if (hour == 0) {
+                timeMsg = [NSString stringWithFormat:@"0:%d", min];
+            }else{
+                timeMsg = [NSString stringWithFormat:@"%d:%d", hour, min];
+            }
+        }else if(batteryLevel == 100){
+            timeMsg = [NSString stringWithFormat:@"充电已完成"];
+        }else{
+            timeMsg = [NSString stringWithFormat:@"正在预估时间..."];
+        }
+    }else{
+        timeMsg = [NSString stringWithFormat:@"未充电"];
+    }
+    
+    //record string
+    NSString *recordMsg;
+    recordMsg = [NSString stringWithFormat:@"%.2f%% 剩余:%@ 当前电流:%d 充电:%@ 充满电:%@ ", batteryLevel, timeMsg, instantAmperage,isCharging ? @"Yes" : @"No", fullyCharged ? @"Yes" : @"No"];
+    
+    //record log
+    [mutableLog setObject:recordMsg forKey:now];
+    dicLog = mutableLog;
+    
+    //write to file
+    [dicLog writeToFile:@"/tmp/ChargingHelper_log.plist" atomically:YES];
+}
 %end
 
 /* When the Firmware <= iOS 6, use SBAwayChaingView */
@@ -147,7 +212,7 @@ UILabel *batteryLevel, *remainingTime;
         [self initChargingTextView];
         isInited = YES;
     }
-    float currentLevel = ((float)currentCapacity/maxCapacity);
+    float currentLevel = ((float)currentCapacity / maxCapacity);
     float levelPercent = currentLevel * 100;
     
     batteryLevel.text = [NSString stringWithFormat:@"%.2f%%",levelPercent];
