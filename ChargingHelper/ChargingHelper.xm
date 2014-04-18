@@ -23,13 +23,16 @@ NSDictionary *batteryStatusDic, *dicLog;
     maxCapacity = [[batteryStatus objectForKey:@"MaxCapacity"] intValue];
     instantAmperage = [[batteryStatus objectForKey:@"InstantAmperage"] intValue];
     isCharging = [[batteryStatus objectForKey:@"IsCharging"]boolValue];
-    BOOL fullyCharged = [[batteryStatus objectForKey:@"FullyCharged"] boolValue];
+    BOOL externalConnected = [[batteryStatus objectForKey:@"ExternalConnected"] boolValue];
+    BOOL externalChargeCapable = [[batteryStatus objectForKey:@"ExternalChargeCapable"] boolValue];
+    
     
     /***********************************************
      record the charging status,
      it can be removed if you don't want to use it. 
      ***********************************************/
-    if (isCharging || fullyCharged){
+    if (isCharging || externalConnected || externalChargeCapable){
+        batteryStatusDic = batteryStatus;
         [self recordChargingLog];
     }
 
@@ -155,7 +158,9 @@ NSDictionary *batteryStatusDic, *dicLog;
     NSString *now;
     now = [NSString stringWithFormat:@"%@", date];
     
-    //is fully charged
+    //is cable plug in
+    BOOL externalConnected = [[batteryStatusDic objectForKey:@"ExternalConnected"] boolValue];
+    BOOL externalChargeCapable = [[batteryStatusDic objectForKey:@"ExternalChargeCapable"] boolValue];
     BOOL fullyCharged = [[batteryStatusDic objectForKey:@"FullyCharged"] boolValue];
     
     //remaining time
@@ -183,7 +188,7 @@ NSDictionary *batteryStatusDic, *dicLog;
     
     //record string
     NSString *recordMsg;
-    recordMsg = [NSString stringWithFormat:@"%.2f%% 剩余:%@ 当前电流:%d 充电:%@ 充满电:%@ ", batteryLevel, timeMsg, instantAmperage,isCharging ? @"Yes" : @"No", fullyCharged ? @"Yes" : @"No"];
+    recordMsg = [NSString stringWithFormat:@"%.2f%% 剩余:%@ 当前电流:%d 数据线插入:%@ 充电插入:%@ 完全充电:%@", batteryLevel, timeMsg, instantAmperage,externalConnected ? @"插入" : @"未插入", externalChargeCapable ? @"插入" : @"未插入", fullyCharged ? @"是" : @"否"];
     
     //record log
     [mutableLog setObject:recordMsg forKey:now];
