@@ -8,14 +8,16 @@ BOOL isCharging;
 -(void)popAlertView;
 -(void)playVibrate;
 -(void)playSound;
--(void)recordChargingLog;
+//-(void)recordChargingLog;
 @end
 
 %hook SpringBoard
 
+/*
 //create a dic to record charging status
 NSMutableDictionary *mutableLog = [NSMutableDictionary dictionary];
 NSDictionary *batteryStatusDic, *dicLog;
+*/
 
 - (void)batteryStatusDidChange:(id)batteryStatus
 {
@@ -25,56 +27,45 @@ NSDictionary *batteryStatusDic, *dicLog;
     isCharging = [[batteryStatus objectForKey:@"IsCharging"]boolValue];
     BOOL externalConnected = [[batteryStatus objectForKey:@"ExternalConnected"] boolValue];
     BOOL externalChargeCapable = [[batteryStatus objectForKey:@"ExternalChargeCapable"] boolValue];
-    
+    BOOL fullyCharged = [[batteryStatus objectForKey:@"FullyCharged"] boolValue];
     
     /***********************************************
      record the charging status,
      it can be removed if you don't want to use it. 
      ***********************************************/
+    /*
     if (isCharging || externalConnected || externalChargeCapable){
         batteryStatusDic = batteryStatus;
         [self recordChargingLog];
     }
-
-    static BOOL alertFlag = YES;
+    if(!externalConnected || !externalChargeCapable){
+        [mutableLog removeAllObjects];
+    }
+     */
+    static BOOL repeatFlag = YES;
     
     /* check the charging is complete or not. */
-    if(currentCapacity == maxCapacity && isCharging)
+    
+    if(externalConnected || externalChargeCapable)
     {
-        //[batteryStatus writeToFile:@"/tmp/a.plist" atomically:YES];
-        
         /* Load the Preferences */
         NSDictionary *preference = [[NSDictionary alloc] initWithContentsOfFile:@"/var/mobile/Library/Preferences/cn.ming.ChargingHelper.plist"];
         BOOL isRepeat = [[preference objectForKey:@"isRepeat"]boolValue];
         BOOL isPopAlert = [[preference objectForKey:@"isPopAlert"]boolValue];
         BOOL isVibrate = [[preference objectForKey:@"isVibrate"] boolValue];
         BOOL isSound = [[preference objectForKey:@"isSound"] boolValue];
+        int chargeMode = [[preference objectForKey:@"chargeMode"] intValue];
         [preference release];
         
-        if(isRepeat)
+        /* Normal Charge Mode */
+        if(currentCapacity == maxCapacity && (chargeMode == 1 || chargeMode == 0))
         {
-            if(alertFlag && isPopAlert)
+            if(isRepeat)
             {
-                [self popAlertView];
-                alertFlag = NO;
-            }
-            if(isVibrate)
-            {
-                [self playVibrate];
-            }
-            if(isSound)
-            {
-                [self playSound];
-            }
-            
-        }
-        else
-        {
-            if(alertFlag)
-            {
-                if(isPopAlert)
+                if(repeatFlag && isPopAlert)
                 {
                     [self popAlertView];
+                    repeatFlag = NO;
                 }
                 if(isVibrate)
                 {
@@ -84,19 +75,74 @@ NSDictionary *batteryStatusDic, *dicLog;
                 {
                     [self playSound];
                 }
-                alertFlag = NO;
+                
+            }
+            else
+            {
+                if(repeatFlag)
+                {
+                    if(isPopAlert)
+                    {
+                        [self popAlertView];
+                    }
+                    if(isVibrate)
+                    {
+                        [self playVibrate];
+                    }
+                    if(isSound)
+                    {
+                        [self playSound];
+                    }
+                    repeatFlag = NO;
+                }
+            }
+            
+        }
+        /* Full Charge Mode */
+        else if(fullyCharged && chargeMode == 2)
+        {
+            if(isRepeat)
+            {
+                if(repeatFlag && isPopAlert)
+                {
+                    [self popAlertView];
+                    repeatFlag = NO;
+                }
+                if(isVibrate)
+                {
+                    [self playVibrate];
+                }
+                if(isSound)
+                {
+                    [self playSound];
+                }
+                
+            }
+            else
+            {
+                if(repeatFlag)
+                {
+                    if(isPopAlert)
+                    {
+                        [self popAlertView];
+                    }
+                    if(isVibrate)
+                    {
+                        [self playVibrate];
+                    }
+                    if(isSound)
+                    {
+                        [self playSound];
+                    }
+                    repeatFlag = NO;
+                }
             }
         }
-        
+    }else{
+        repeatFlag = YES;
     }
-    else if(!isCharging)
-    {
-        alertFlag = YES;
-    }
-    
-    
-
-	%orig;
+ 
+    %orig;
 }
 
 %new
@@ -145,9 +191,11 @@ NSDictionary *batteryStatusDic, *dicLog;
     AudioServicesPlaySystemSound(sameViewSoundID); //play SoundID's sound
 }
 
-%new
+
 
 /* a method to record the charging status */
+/*
+%new
 -(void)recordChargingLog
 {
     //battery level
@@ -178,16 +226,6 @@ NSDictionary *batteryStatusDic, *dicLog;
                 min = (100 - batteryLevel) * 3;
                 timeMsg = [NSString stringWithFormat:@"0:%d", min];
             }
-            /*
-            timeHour = ((float)maxCapacity  - currentCapacity) / instantAmperage;
-            hour = timeHour;
-            min = (timeHour - hour) * 60;
-            if (hour == 0) {
-                timeMsg = [NSString stringWithFormat:@"0:%d", min];
-            }else{
-                timeMsg = [NSString stringWithFormat:@"%d:%d", hour, min];
-            }
-             */
         }else if(batteryLevel == 100){
             timeMsg = [NSString stringWithFormat:@"充电已完成"];
         }else{
@@ -208,6 +246,7 @@ NSDictionary *batteryStatusDic, *dicLog;
     //write to file
     [dicLog writeToFile:@"/tmp/ChargingHelper_log.plist" atomically:YES];
 }
+*/
 %end
 
 /* When the Firmware <= iOS 6, use SBAwayChaingView */
@@ -224,6 +263,9 @@ UILabel *batteryLevel, *remainingTime;
 {
     %orig;
     
+    /* Load the Preferences */
+    NSDictionary *preference = [[NSDictionary alloc] initWithContentsOfFile:@"/var/mobile/Library/Preferences/cn.ming.ChargingHelper.plist"];
+    
     if(!isInited){
         [self initChargingTextView];
         isInited = YES;
@@ -236,7 +278,7 @@ UILabel *batteryLevel, *remainingTime;
     /* check the os language */
     NSArray *languages = [NSLocale preferredLanguages];
     NSString *currentLanguage = [languages objectAtIndex:0];
-    NSString *timeMsg, *chargingLabel, *hourLabel, *minLabel, *completeLabel, *calulateLabel, *notChargingLabel;
+    NSString *timeMsg,*chargingLabel, *hourLabel, *minLabel, *completeLabel, *calulateLabel, *notChargingLabel, *trickleCharging;
     
     if ([currentLanguage isEqualToString:@"zh-Hans"]) {
         chargingLabel = @"预计充电";
@@ -245,6 +287,7 @@ UILabel *batteryLevel, *remainingTime;
         completeLabel = @"充电已完成";
         calulateLabel = @"正在预估时间...";
         notChargingLabel = @"未充电";
+        trickleCharging = @"涓流充电中...";
     }else if([currentLanguage isEqualToString:@"zh-Hant"]){
         chargingLabel = @"預計充電";
         hourLabel = @"小時";
@@ -252,6 +295,7 @@ UILabel *batteryLevel, *remainingTime;
         completeLabel = @"充電已完成";
         calulateLabel = @"正在預估時間...";
         notChargingLabel = @"未充電";
+        trickleCharging = @"涓流充電中...";
     }else{
         chargingLabel = @"Remaining Time";
         hourLabel = @"hour(s)";
@@ -259,10 +303,13 @@ UILabel *batteryLevel, *remainingTime;
         completeLabel = @"Charging is complete";
         calulateLabel = @"Calculating...";
         notChargingLabel = @"Not charging";
+        trickleCharging = @"Trickle Charging...";
     }
-    
+
     float timeHour;
     int hour, min;
+    int chargeMode = [[preference objectForKey:@"chargeMode"] intValue];
+    
     if(isCharging){
         if(levelPercent < 100 && instantAmperage > 0){
             if(levelPercent < 80){
@@ -274,27 +321,37 @@ UILabel *batteryLevel, *remainingTime;
                 min = (100 - levelPercent) * 3;
                 timeMsg = [NSString stringWithFormat:@"%@:%d%@", chargingLabel, min, minLabel];
             }
-            
-            /*
-            timeHour = ((float)maxCapacity  - currentCapacity) / instantAmperage;
-            hour = timeHour;
-            min = (timeHour - hour) * 60;
-            if (hour == 0) {
-                timeMsg = [NSString stringWithFormat:@"%@:%d%@", chargingLabel, min, minLabel];
-            }else{
-                timeMsg = [NSString stringWithFormat:@"%@: %d%@ %d%@", chargingLabel, hour, hourLabel, min, minLabel];
-            }
-             */
         }else if(levelPercent == 100){
-            timeMsg = [NSString stringWithFormat:@"%@", completeLabel];
+            switch (chargeMode) {
+                case 1:
+                    timeMsg = completeLabel;
+                    break;
+                case 2:
+                    timeMsg = trickleCharging;
+                    break;
+                default:
+                    timeMsg = completeLabel;
+                    break;
+            }
         }else{
-            timeMsg = [NSString stringWithFormat:@"%@", calulateLabel];
+            timeMsg = calulateLabel;
         }
     }else{
-        timeMsg = [NSString stringWithFormat:@"%@", notChargingLabel];
+        switch(chargeMode){
+            case 1:
+                timeMsg = notChargingLabel;
+                break;
+            case 2:
+                timeMsg = completeLabel;
+                break;
+            default:
+                timeMsg = notChargingLabel;
+                break;
+        }
     }
     remainingTime.text = timeMsg;
 
+    [preference release];
 }
 
 -(void)dealloc
@@ -346,11 +403,15 @@ UILabel *batteryLevel, *remainingTime;
 - (void)layoutSubviews
 {
     %orig;
+    
+    //load the preferences
+    NSDictionary *preference = [[NSDictionary alloc] initWithContentsOfFile:@"/var/mobile/Library/Preferences/cn.ming.ChargingHelper.plist"];
+    
     if(!isInited){
         [self initChargingTextView];
-        NSDictionary *preference = [[NSDictionary alloc] initWithContentsOfFile:@"/var/mobile/Library/Preferences/cn.ming.ChargingHelper.plist"];
+        
+        //load the font color setting.
         int colorValue = [[preference objectForKey:@"textColor"] intValue];
-        [preference release];
         
         UIColor *textColor;
         switch (colorValue) {
@@ -374,7 +435,7 @@ UILabel *batteryLevel, *remainingTime;
     /* check the os language */
     NSArray *languages = [NSLocale preferredLanguages];
     NSString *currentLanguage = [languages objectAtIndex:0];
-    NSString *timeMsg,*chargingLabel, *hourLabel, *minLabel, *completeLabel, *calulateLabel, *notChargingLabel;
+    NSString *timeMsg,*chargingLabel, *hourLabel, *minLabel, *completeLabel, *calulateLabel, *notChargingLabel, *trickleCharging;
     
     if ([currentLanguage isEqualToString:@"zh-Hans"]) {
         chargingLabel = @"预计充电";
@@ -383,6 +444,7 @@ UILabel *batteryLevel, *remainingTime;
         completeLabel = @"充电已完成";
         calulateLabel = @"正在预估时间...";
         notChargingLabel = @"未充电";
+        trickleCharging = @"涓流充电中...";
     }else if([currentLanguage isEqualToString:@"zh-Hant"]){
         chargingLabel = @"預計充電";
         hourLabel = @"小時";
@@ -390,6 +452,7 @@ UILabel *batteryLevel, *remainingTime;
         completeLabel = @"充電已完成";
         calulateLabel = @"正在預估時間...";
         notChargingLabel = @"未充電";
+        trickleCharging = @"涓流充電中...";
     }else{
         chargingLabel = @"Remaining Time";
         hourLabel = @"hour(s)";
@@ -397,10 +460,13 @@ UILabel *batteryLevel, *remainingTime;
         completeLabel = @"Charging is complete";
         calulateLabel = @"Calculating...";
         notChargingLabel = @"Not charging";
+        trickleCharging = @"Trickle Charging...";
     }
     
     float timeHour;
     int hour, min;
+    
+    int chargeMode = [[preference objectForKey:@"chargeMode"] intValue];
     
     float currentLevel = ((float)currentCapacity / maxCapacity);
     float levelPercent = currentLevel * 100;
@@ -417,28 +483,39 @@ UILabel *batteryLevel, *remainingTime;
                 min = (100 - levelPercent) * 3;
                 timeMsg = [NSString stringWithFormat:@"%@:%d%@", chargingLabel, min, minLabel];
             }
-            
-            /*
-            timeHour = ((float)maxCapacity  - currentCapacity) / instantAmperage;
-            hour = timeHour;
-            min = (timeHour - hour) * 60;
-            if (hour == 0) {
-                timeMsg = [NSString stringWithFormat:@"%@:%d %@", chargingLabel, min, minLabel];
-            }else{
-                timeMsg = [NSString stringWithFormat:@"%@: %d%@ %d%@", chargingLabel, hour, hourLabel, min, minLabel];
-            }
-             */
+
         }else if(levelPercent == 100){
-            timeMsg = [NSString stringWithFormat:@"%@", completeLabel];
+            switch (chargeMode) {
+                case 1:
+                    timeMsg = completeLabel;
+                    break;
+                case 2:
+                    timeMsg = trickleCharging;
+                    break;
+                default:
+                    timeMsg = completeLabel;
+                    break;
+            }
         }else{
-            timeMsg = [NSString stringWithFormat:@"%@", calulateLabel];
+            timeMsg = calulateLabel;
         }
     }else{
-        timeMsg = [NSString stringWithFormat:@"%@", notChargingLabel];
+        switch(chargeMode){
+            case 1:
+                timeMsg = notChargingLabel;
+                break;
+            case 2:
+                timeMsg = completeLabel;
+                break;
+            default:
+                timeMsg = notChargingLabel;
+                break;
+        }
     }
     remainingTime.text = timeMsg;
 
-
+    //release load dic
+    [preference release];
 }
 -(void)dealloc
 {

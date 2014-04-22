@@ -85,6 +85,42 @@
 			<key>isStaticText</key>
 			<true/>
 			<key>label</key>
+			<string>Charge Mode</string>
+			<key>footerText</key>
+			<string>&quot;Full Charge Mode&quot; includes a fast charge and a trickle charge, but not suggest use it usually.</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSLinkListCell</string>
+			<key>defaults</key>
+			<string>cn.ming.ChargingHelper</string>
+			<key>key</key>
+			<string>chargeMode</string>
+			<key>label</key>
+			<string>Charge Mode</string>
+			<key>detail</key>
+			<string>PSListItemsController</string>
+			<key>validTitles</key>
+			<array>
+				<string>Normal Charge Mode</string>
+				<string>Full Charge Mode</string>
+			</array>
+			<key>validValues</key>
+			<array>
+				<integer>1</integer>
+				<integer>2</integer>
+			</array>
+			<key>default</key>
+			<integer>1</integer>
+			<key>PostNotification</key>
+			<string>cn.ming.ChargingHelper-preferencesChanged</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>isStaticText</key>
+			<true/>
+			<key>label</key>
 			<string>Lock Screen Font Color</string>
 			<key>footerText</key>
 			<string>The &quot;Font Color&quot; setting works on iOS 7 only.</string>

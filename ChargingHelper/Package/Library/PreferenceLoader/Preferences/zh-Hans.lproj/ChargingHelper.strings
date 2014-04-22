@@ -14,6 +14,16 @@
 	<string>声音提示</string>
 	<key>Vibrate</key>
 	<string>振动提示</string>
+    <key>Charge Mode</key>
+    <string>充电模式</string>
+    <key>Charge Mode</key>
+    <string>充电模式</string>
+    <key>Normal Charge Mode</key>
+    <string>普通充电模式</string>
+    <key>Full Charge Mode</key>
+    <string>完全充电模式</string>
+    <key>"Full Charge Mode" includes a fast charge and a trickle charge, but not suggest use it usually.</key>
+    <string>完全充电模式包含快速充电和涓流充电，但不建议每次充电都使用这种模式。</string>
 	<key>Lock Screen Font Color</key>
 	<string>锁屏字体颜色</string>
 	<key>Font Color</key>
