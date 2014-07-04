@@ -4,8 +4,8 @@
 <dict>
 	<key>General</key>
 	<string>设置开关</string>
-    <key>If the reminder is not in accordance with your settings, please re-open or re-close the switch.</key>
-    <string>如果没有按照你的设置进行提醒，请重新打开或者关上开关。</string>
+    <key>"Battery Detail" will show the battery info when the charger plugs in and plugs out.</key>
+    <string>打开"电池信息"，在你插入和拔出充电器的时候会显示当前电池信息。</string>
 	<key>Repeat Alerts</key>
 	<string>重复提醒</string>
     <key>Pop Alert</key>
@@ -14,6 +14,8 @@
 	<string>声音提示</string>
 	<key>Vibrate</key>
 	<string>振动提示</string>
+    <key>Battery Detail</key>
+    <string>电池信息</string>
     <key>Charge Mode</key>
     <string>充电模式</string>
     <key>Charge Mode</key>
@@ -22,8 +24,12 @@
     <string>普通充电模式</string>
     <key>Full Charge Mode</key>
     <string>完全充电模式</string>
-    <key>"Full Charge Mode" includes a fast charge and a trickle charge, but not suggest use it usually.</key>
-    <string>完全充电模式包含快速充电和涓流充电，但不建议每次充电都使用这种模式。</string>
+    <key>"Full Charge Mode" includes a fast charge and a trickle charge, and takes more time.</key>
+    <string>完全充电模式包含快速充电和涓流充电，并且花费较长的充电时间。</string>
+    <key>Alert Level</key>
+    <string>自定义提醒电量</string>
+    <key>It will alert you at the level you choose.</key>
+    <string>当充电到达你选择的电量的时候会提醒你。</string>
 	<key>Lock Screen Font Color</key>
 	<string>锁屏字体颜色</string>
 	<key>Font Color</key>

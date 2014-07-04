@@ -21,7 +21,7 @@
 			<key>label</key>
 			<string>General</string>
 			<key>footerText</key>
-			<string>If the reminder is not in accordance with your settings, please re-open or re-close the switch.</string>
+			<string>&quot;Battery Detail&quot; will show the battery info when the charger plugs in and plugs out.</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -81,13 +81,27 @@
 		</dict>
 		<dict>
 			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>cn.ming.ChargingHelper</string>
+			<key>key</key>
+			<string>isShowDetail</string>
+			<key>label</key>
+			<string>Battery Detail</string>
+			<key>PostNotification</key>
+			<string>cn.ming.ChargingHelper-preferencesChanged</string>
+		</dict>
+		<dict>
+			<key>cell</key>
 			<string>PSGroupCell</string>
 			<key>isStaticText</key>
 			<true/>
 			<key>label</key>
 			<string>Charge Mode</string>
 			<key>footerText</key>
-			<string>&quot;Full Charge Mode&quot; includes a fast charge and a trickle charge, but not suggest use it usually.</string>
+			<string>&quot;Full Charge Mode&quot; includes a fast charge and a trickle charge, and takes more time.</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -112,6 +126,50 @@
 			</array>
 			<key>default</key>
 			<integer>1</integer>
+			<key>PostNotification</key>
+			<string>cn.ming.ChargingHelper-preferencesChanged</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>isStaticText</key>
+			<true/>
+			<key>label</key>
+			<string>Alert Level</string>
+			<key>footerText</key>
+			<string>It will alert you at the level you choose.</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSLinkListCell</string>
+			<key>defaults</key>
+			<string>cn.ming.ChargingHelper</string>
+			<key>key</key>
+			<string>alertLevel</string>
+			<key>label</key>
+			<string>Alert Level</string>
+			<key>detail</key>
+			<string>PSListItemsController</string>
+			<key>validTitles</key>
+			<array>
+				<string>100%</string>
+				<string>90%</string>
+				<string>80%</string>
+				<string>70%</string>
+				<string>60%</string>
+				<string>50%</string>
+			</array>
+			<key>validValues</key>
+			<array>
+				<integer>100</integer>
+				<integer>90</integer>
+				<integer>80</integer>
+				<integer>70</integer>
+				<integer>60</integer>
+				<integer>50</integer>
+			</array>
+			<key>default</key>
+			<integer>100</integer>
 			<key>PostNotification</key>
 			<string>cn.ming.ChargingHelper-preferencesChanged</string>
 		</dict>

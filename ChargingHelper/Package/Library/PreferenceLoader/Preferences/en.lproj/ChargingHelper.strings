@@ -4,8 +4,8 @@
 <dict>
     <key>General</key>
     <string>General</string>
-    <key>If the reminder is not in accordance with your settings, please re-open or re-close the switch.</key>
-    <string>If the reminder is not in accordance with your settings, please re-open or re-close the switch.</string>
+    <key>"Battery Detail" will show the battery info when the charger plugs in and plugs out.</key>
+    <string>"Battery Detail" will show the battery info when the charger plugs in and plugs out.</string>
     <key>Repeat Alerts</key>
     <string>Repeat Alerts</string>
     <key>Pop Alert</key>
@@ -14,6 +14,8 @@
     <string>Ring</string>
     <key>Vibrate</key>
     <string>Vibrate</string>
+    <key>Battery Detail</key>
+    <string>Battery Detail</string>
     <key>Charge Mode</key>
     <string>Charge Mode</string>
     <key>Charge Mode</key>
@@ -22,8 +24,12 @@
     <string>Normal Charge Mode</string>
     <key>Full Charge Mode</key>
     <string>Full Charge Mode</string>
-    <key>"Full Charge Mode" includes a fast charge and a trickle charge, but not suggest use it usually.</key>
-    <string>"Full Charge Mode" includes a fast charge and a trickle charge, but not suggest use it usually.</string>
+    <key>"Full Charge Mode" includes a fast charge and a trickle charge, and takes more time.</key>
+    <string>"Full Charge Mode" includes a fast charge and a trickle charge, and takes more time.</string>
+    <key>Alert Level</key>
+    <string>Alert Level</string>
+    <key>It will alert you at the level you choose.</key>
+    <string>It will alert you at the level you choose.</string>
     <key>Lock Screen Font Color</key>
     <string>Lock Screen Font Color</string>
     <key>Font Color</key>

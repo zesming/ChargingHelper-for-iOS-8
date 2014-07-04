@@ -1,11 +1,13 @@
 #import <UIKit/UIKit.h>
 #import <AudioToolbox/AudioToolbox.h>
 
-int currentCapacity, maxCapacity, instantAmperage;
+int currentCapacity, maxCapacity, instantAmperage, designCapacity, cycleCount, temperature;
 BOOL isCharging;
 
 @interface SpringBoard : UIApplication
 -(void)popAlertView;
+-(void)popDIYLevelAlertView;
+-(void)popBatteryDetail;
 -(void)playVibrate;
 -(void)playSound;
 //-(void)recordChargingLog;
@@ -23,6 +25,9 @@ NSDictionary *batteryStatusDic, *dicLog;
 {
 	currentCapacity = [[batteryStatus objectForKey:@"CurrentCapacity"] intValue];
     maxCapacity = [[batteryStatus objectForKey:@"MaxCapacity"] intValue];
+    designCapacity = [[batteryStatus objectForKey:@"DesignCapacity"] intValue];
+    cycleCount = [[batteryStatus objectForKey:@"CycleCount"] intValue];
+    temperature = [[batteryStatus objectForKey:@"Temperature"] intValue];
     instantAmperage = [[batteryStatus objectForKey:@"InstantAmperage"] intValue];
     isCharging = [[batteryStatus objectForKey:@"IsCharging"]boolValue];
     BOOL externalConnected = [[batteryStatus objectForKey:@"ExternalConnected"] boolValue];
@@ -43,6 +48,8 @@ NSDictionary *batteryStatusDic, *dicLog;
     }
      */
     static BOOL repeatFlag = YES;
+    static BOOL alertLevelFlag = YES;
+    static BOOL detailFlag = YES;
     
     /* check the charging is complete or not. */
     
@@ -54,8 +61,40 @@ NSDictionary *batteryStatusDic, *dicLog;
         BOOL isPopAlert = [[preference objectForKey:@"isPopAlert"]boolValue];
         BOOL isVibrate = [[preference objectForKey:@"isVibrate"] boolValue];
         BOOL isSound = [[preference objectForKey:@"isSound"] boolValue];
+        BOOL isShowDetail = [[preference objectForKey:@"isShowDetail"] boolValue];
         int chargeMode = [[preference objectForKey:@"chargeMode"] intValue];
+        int alertLevel = [[preference objectForKey:@"alertLevel"] intValue];
         [preference release];
+        
+        /* Show battery detail when cable plug in */
+        if(isShowDetail && detailFlag){
+            [self popBatteryDetail];
+            detailFlag = NO;
+        }
+        
+        /* Alert Level is not 100% */
+        if(alertLevel != 0 && alertLevel != 100)
+        {
+            int currentLevel = ((float)currentCapacity / maxCapacity) * 100;
+            if (currentLevel == alertLevel)
+            {
+                if (alertLevelFlag)
+                {
+                    [self popDIYLevelAlertView];
+                    
+                    if(isVibrate)
+                    {
+                        [self playVibrate];
+                    }
+                    if(isSound)
+                    {
+                        [self playSound];
+                    }
+
+                    alertLevelFlag = NO;
+                }
+            }
+        }
         
         /* Normal Charge Mode */
         if(currentCapacity == maxCapacity && (chargeMode == 1 || chargeMode == 0))
@@ -140,6 +179,14 @@ NSDictionary *batteryStatusDic, *dicLog;
         }
     }else{
         repeatFlag = YES;
+        alertLevelFlag = YES;
+        
+        //show battery detail when cable plug out
+        if(!detailFlag)
+        {
+            [self popBatteryDetail];
+            detailFlag = YES;
+        }
     }
  
     %orig;
@@ -166,6 +213,88 @@ NSDictionary *batteryStatusDic, *dicLog;
         msg = @"Charging is complete";
         cbButton = @"OK";
     }
+    
+    //pop the alert view
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:msg delegate:nil cancelButtonTitle:cbButton otherButtonTitles:nil];
+    [alert show];
+    [alert release];
+}
+
+%new
+-(void)popDIYLevelAlertView
+{
+    /* Load the Preferences */
+    NSDictionary *preference = [[NSDictionary alloc] initWithContentsOfFile:@"/var/mobile/Library/Preferences/cn.ming.ChargingHelper.plist"];
+    int alertLevel = [[preference objectForKey:@"alertLevel"] intValue];
+    [preference release];
+    
+    /* check the os language */
+    NSArray *languages = [NSLocale preferredLanguages];
+    NSString *currentLanguage = [languages objectAtIndex:0];
+    NSString *title, *msg, *cbButton;
+    
+    if ([currentLanguage isEqualToString:@"zh-Hans"]) {
+        title = @"提示";
+        msg = @"充电已到达";
+        cbButton = @"确定";
+    }else if([currentLanguage isEqualToString:@"zh-Hant"]){
+        title = @"提示";
+        msg = @"充電已到达";
+        cbButton = @"好";
+    }else{
+        title = @"Message";
+        msg = @"Charging has reached";
+        cbButton = @"OK";
+    }
+    
+    //pop the alert view
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:[NSString stringWithFormat:@"%@ %d%%", msg, alertLevel] delegate:nil cancelButtonTitle:cbButton otherButtonTitles:nil];
+    [alert show];
+    [alert release];
+}
+
+%new
+-(void)popBatteryDetail
+{
+    /* check the os language */
+    NSArray *languages = [NSLocale preferredLanguages];
+    NSString *currentLanguage = [languages objectAtIndex:0];
+    NSString *title, *msg, *currentCapacityLabel, *maxCapacityLabel, *designCapacityLabel, *batteryLifeLabel, *cycleCountLabel, *temperatureLabel, *cbButton;
+    float batteryLife, batteryTemperature;
+    
+    batteryLife = ((float)maxCapacity /designCapacity) * 100;
+    batteryTemperature = ((float)temperature / 100);
+    
+    if ([currentLanguage isEqualToString:@"zh-Hans"]) {
+        title = @"电池信息";
+        currentCapacityLabel = @"当前容量";
+        maxCapacityLabel = @"最大容量";
+        designCapacityLabel = @"设计容量";
+        batteryLifeLabel = @"健康度";
+        cycleCountLabel = @"循环次数";
+        temperatureLabel = @"电池温度";
+        cbButton = @"确定";
+    }else if([currentLanguage isEqualToString:@"zh-Hant"]){
+        title = @"電池信息";
+        currentCapacityLabel = @"當前容量";
+        maxCapacityLabel = @"最大容量";
+        designCapacityLabel = @"設計容量";
+        batteryLifeLabel = @"健康度";
+        cycleCountLabel = @"循環次數";
+        temperatureLabel = @"電池溫度";
+        cbButton = @"好";
+    }else{
+        title = @"Battery Info";
+        currentCapacityLabel = @"Current Capacity";
+        maxCapacityLabel = @"Max Capacity";
+        designCapacityLabel = @"Design Capacity";
+        batteryLifeLabel = @"Remain";
+        cycleCountLabel = @"Cycles";
+        temperatureLabel = @"Temperature";
+        cbButton = @"OK";
+    }
+    
+    msg = [NSString stringWithFormat:@"%@:%d mAh \n%@:%d mAh \n%@:%d mAh \n%@:%.1f%% \n%@:%d \n%@:%.1f℃", currentCapacityLabel, currentCapacity, maxCapacityLabel, maxCapacity, designCapacityLabel, designCapacity, batteryLifeLabel, batteryLife, cycleCountLabel, cycleCount, temperatureLabel, batteryTemperature];
     
     //pop the alert view
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:msg delegate:nil cancelButtonTitle:cbButton otherButtonTitles:nil];
