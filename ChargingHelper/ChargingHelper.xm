@@ -10,7 +10,6 @@ BOOL isCharging, externalConnected, externalChargeCapable;
 - (void)popBatteryDetail;
 - (void)playVibrate;
 - (void)playSound;
-//- (void)writeStatusToFile
 //- (void)recordChargingLog;
 @end
 
@@ -322,12 +321,6 @@ NSDictionary *batteryStatusDic, *dicLog;
     AudioServicesPlaySystemSound(sameViewSoundID); //play SoundID's sound
 }
 
-//%new
-//- (void)writeStatusToFile
-//{
-//    
-//}
-
 /* a method to record the charging status */
 /*
 %new
@@ -481,7 +474,7 @@ UILabel *batteryLevel, *remainingTime;
                 timeMsg = [NSString stringWithFormat:@"%@:%d%@", chargingLabel, min, minLabel];
             }
 
-        }else if(levelPercent == 100){
+        }else if(levelPercent >= 100){
             switch (chargeMode) {
                 case 1:
                     timeMsg = completeLabel;

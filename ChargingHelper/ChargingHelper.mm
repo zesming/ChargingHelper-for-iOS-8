@@ -12,7 +12,6 @@ BOOL isCharging, externalConnected, externalChargeCapable;
 - (void)playVibrate;
 - (void)playSound;
 
-
 @end
 
 #include <logos/logos.h>
@@ -20,7 +19,7 @@ BOOL isCharging, externalConnected, externalChargeCapable;
 @class SBLockScreenBatteryChargingViewController; @class SpringBoard; 
 static void (*_logos_orig$_ungrouped$SpringBoard$batteryStatusDidChange$)(SpringBoard*, SEL, id); static void _logos_method$_ungrouped$SpringBoard$batteryStatusDidChange$(SpringBoard*, SEL, id); static void _logos_method$_ungrouped$SpringBoard$popAlertView(SpringBoard*, SEL); static void _logos_method$_ungrouped$SpringBoard$popDIYLevelAlertView(SpringBoard*, SEL); static void _logos_method$_ungrouped$SpringBoard$popBatteryDetail(SpringBoard*, SEL); static void _logos_method$_ungrouped$SpringBoard$playVibrate(SpringBoard*, SEL); static void _logos_method$_ungrouped$SpringBoard$playSound(SpringBoard*, SEL); static void (*_logos_orig$_ungrouped$SBLockScreenBatteryChargingViewController$loadView)(SBLockScreenBatteryChargingViewController*, SEL); static void _logos_method$_ungrouped$SBLockScreenBatteryChargingViewController$loadView(SBLockScreenBatteryChargingViewController*, SEL); static void (*_logos_orig$_ungrouped$SBLockScreenBatteryChargingViewController$dealloc)(SBLockScreenBatteryChargingViewController*, SEL); static void _logos_method$_ungrouped$SBLockScreenBatteryChargingViewController$dealloc(SBLockScreenBatteryChargingViewController*, SEL); static void _logos_method$_ungrouped$SBLockScreenBatteryChargingViewController$initChargingTextView(SBLockScreenBatteryChargingViewController*, SEL); static void _logos_method$_ungrouped$SBLockScreenBatteryChargingViewController$setupContainViewCenter(SBLockScreenBatteryChargingViewController*, SEL); 
 
-#line 17 "/Projects/ChargingHelper-for-iOS-8/ChargingHelper/ChargingHelper.xm"
+#line 16 "/Projects/ChargingHelper-for-iOS-8/ChargingHelper/ChargingHelper.xm"
 
 
 
@@ -386,12 +385,6 @@ static void _logos_method$_ungrouped$SpringBoard$playSound(SpringBoard* self, SE
 
 
 
-
-
-
-
-
-
 #define isPad (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 
 @interface SBLockScreenBatteryChargingViewController : UIViewController
@@ -488,7 +481,7 @@ static void _logos_method$_ungrouped$SBLockScreenBatteryChargingViewController$l
                 timeMsg = [NSString stringWithFormat:@"%@:%d%@", chargingLabel, min, minLabel];
             }
 
-        }else if(levelPercent == 100){
+        }else if(levelPercent >= 100){
             switch (chargeMode) {
                 case 1:
                     timeMsg = completeLabel;
@@ -572,4 +565,4 @@ static void _logos_method$_ungrouped$SBLockScreenBatteryChargingViewController$s
 
 static __attribute__((constructor)) void _logosLocalInit() {
 {Class _logos_class$_ungrouped$SpringBoard = objc_getClass("SpringBoard"); MSHookMessageEx(_logos_class$_ungrouped$SpringBoard, @selector(batteryStatusDidChange:), (IMP)&_logos_method$_ungrouped$SpringBoard$batteryStatusDidChange$, (IMP*)&_logos_orig$_ungrouped$SpringBoard$batteryStatusDidChange$);{ char _typeEncoding[1024]; unsigned int i = 0; _typeEncoding[i] = 'v'; i += 1; _typeEncoding[i] = '@'; i += 1; _typeEncoding[i] = ':'; i += 1; _typeEncoding[i] = '\0'; class_addMethod(_logos_class$_ungrouped$SpringBoard, @selector(popAlertView), (IMP)&_logos_method$_ungrouped$SpringBoard$popAlertView, _typeEncoding); }{ char _typeEncoding[1024]; unsigned int i = 0; _typeEncoding[i] = 'v'; i += 1; _typeEncoding[i] = '@'; i += 1; _typeEncoding[i] = ':'; i += 1; _typeEncoding[i] = '\0'; class_addMethod(_logos_class$_ungrouped$SpringBoard, @selector(popDIYLevelAlertView), (IMP)&_logos_method$_ungrouped$SpringBoard$popDIYLevelAlertView, _typeEncoding); }{ char _typeEncoding[1024]; unsigned int i = 0; _typeEncoding[i] = 'v'; i += 1; _typeEncoding[i] = '@'; i += 1; _typeEncoding[i] = ':'; i += 1; _typeEncoding[i] = '\0'; class_addMethod(_logos_class$_ungrouped$SpringBoard, @selector(popBatteryDetail), (IMP)&_logos_method$_ungrouped$SpringBoard$popBatteryDetail, _typeEncoding); }{ char _typeEncoding[1024]; unsigned int i = 0; _typeEncoding[i] = 'v'; i += 1; _typeEncoding[i] = '@'; i += 1; _typeEncoding[i] = ':'; i += 1; _typeEncoding[i] = '\0'; class_addMethod(_logos_class$_ungrouped$SpringBoard, @selector(playVibrate), (IMP)&_logos_method$_ungrouped$SpringBoard$playVibrate, _typeEncoding); }{ char _typeEncoding[1024]; unsigned int i = 0; _typeEncoding[i] = 'v'; i += 1; _typeEncoding[i] = '@'; i += 1; _typeEncoding[i] = ':'; i += 1; _typeEncoding[i] = '\0'; class_addMethod(_logos_class$_ungrouped$SpringBoard, @selector(playSound), (IMP)&_logos_method$_ungrouped$SpringBoard$playSound, _typeEncoding); }Class _logos_class$_ungrouped$SBLockScreenBatteryChargingViewController = objc_getClass("SBLockScreenBatteryChargingViewController"); MSHookMessageEx(_logos_class$_ungrouped$SBLockScreenBatteryChargingViewController, @selector(loadView), (IMP)&_logos_method$_ungrouped$SBLockScreenBatteryChargingViewController$loadView, (IMP*)&_logos_orig$_ungrouped$SBLockScreenBatteryChargingViewController$loadView);MSHookMessageEx(_logos_class$_ungrouped$SBLockScreenBatteryChargingViewController, @selector(dealloc), (IMP)&_logos_method$_ungrouped$SBLockScreenBatteryChargingViewController$dealloc, (IMP*)&_logos_orig$_ungrouped$SBLockScreenBatteryChargingViewController$dealloc);{ char _typeEncoding[1024]; unsigned int i = 0; _typeEncoding[i] = 'v'; i += 1; _typeEncoding[i] = '@'; i += 1; _typeEncoding[i] = ':'; i += 1; _typeEncoding[i] = '\0'; class_addMethod(_logos_class$_ungrouped$SBLockScreenBatteryChargingViewController, @selector(initChargingTextView), (IMP)&_logos_method$_ungrouped$SBLockScreenBatteryChargingViewController$initChargingTextView, _typeEncoding); }{ char _typeEncoding[1024]; unsigned int i = 0; _typeEncoding[i] = 'v'; i += 1; _typeEncoding[i] = '@'; i += 1; _typeEncoding[i] = ':'; i += 1; _typeEncoding[i] = '\0'; class_addMethod(_logos_class$_ungrouped$SBLockScreenBatteryChargingViewController, @selector(setupContainViewCenter), (IMP)&_logos_method$_ungrouped$SBLockScreenBatteryChargingViewController$setupContainViewCenter, _typeEncoding); }} }
-#line 566 "/Projects/ChargingHelper-for-iOS-8/ChargingHelper/ChargingHelper.xm"
+#line 559 "/Projects/ChargingHelper-for-iOS-8/ChargingHelper/ChargingHelper.xm"
