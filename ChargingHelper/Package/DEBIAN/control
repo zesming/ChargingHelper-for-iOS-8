@@ -1,10 +1,10 @@
-Package: cn.ming.ChargingHelper
-Name: ChargingHelper
-Version: 0.5.0-2
+Package: cn.ming.ChargingHelper.iOS8
+Name: ChargingHelper for iOS 8
+Version: 0.6.0-1
 Description: 
 Section: System
-Depends: firmware (>= 6.0), mobilesubstrate
-Conflicts: 
+Depends: firmware (>= 8.0), mobilesubstrate
+Conflicts: cn.ming.ChargingHelper
 Replaces: 
 Priority: optional
 Architecture: iphoneos-arm

@@ -10,31 +10,31 @@
 	<string>ChargingHelper</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>9F92185D-2C48-46BD-89FB-7449E330917D</key>
-		<string>https://github.com/ming9010/ChargingHelper.git</string>
+		<key>ADF2616877D87D76BAC85EDF76D91A5E93D05DFF</key>
+		<string>github.com:ming9010/ChargingHelper.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>ChargingHelper.xcodeproj/project.xcworkspace</string>
+	<string>ChargingHelper.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>9F92185D-2C48-46BD-89FB-7449E330917D</key>
+		<key>ADF2616877D87D76BAC85EDF76D91A5E93D05DFF</key>
 		<string>../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>https://github.com/ming9010/ChargingHelper.git</string>
+	<string>github.com:ming9010/ChargingHelper.git</string>
 	<key>IDESourceControlProjectVersion</key>
-	<integer>110</integer>
+	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>9F92185D-2C48-46BD-89FB-7449E330917D</string>
+	<string>ADF2616877D87D76BAC85EDF76D91A5E93D05DFF</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>9F92185D-2C48-46BD-89FB-7449E330917D</string>
+			<string>ADF2616877D87D76BAC85EDF76D91A5E93D05DFF</string>
 			<key>IDESourceControlWCCName</key>
-			<string>ChargingHelper</string>
+			<string>ChargingHelper%20for%20iOS%208</string>
 		</dict>
 	</array>
 </dict>
