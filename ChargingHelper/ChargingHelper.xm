@@ -78,7 +78,7 @@ NSDictionary *batteryStatusDic, *dicLog;
         if(alertLevel != 0 && alertLevel != 100)
         {
             int currentLevel = ((float)currentCapacity / maxCapacity) * 100;
-            if (currentLevel == alertLevel)
+            if (currentLevel >= alertLevel)
             {
                 if (alertLevelFlag)
                 {
@@ -384,152 +384,6 @@ NSDictionary *batteryStatusDic, *dicLog;
 */
 %end
 
-/* When the Firmware <= iOS 6, use SBAwayChaingView */
-
-@interface SBAwayChargingView : UIView
--(void)initChargingTextView;
-@end
-
-%hook SBAwayChargingView
-BOOL isInited = NO;
-UIView *containView;
-UILabel *batteryLevel, *remainingTime;
-- (void)addChargingView
-{
-    %orig;
-    
-    /* Load the Preferences */
-    NSDictionary *preference = [[NSDictionary alloc] initWithContentsOfFile:@"/var/mobile/Library/Preferences/cn.ming.ChargingHelper.plist"];
-    
-    if(!isInited){
-        [self initChargingTextView];
-        isInited = YES;
-    }
-    float currentLevel = ((float)currentCapacity / maxCapacity);
-    float levelPercent = currentLevel * 100;
-    
-    batteryLevel.text = [NSString stringWithFormat:@"%.2f%%",levelPercent];
-    
-    /* check the os language */
-    NSArray *languages = [NSLocale preferredLanguages];
-    NSString *currentLanguage = [languages objectAtIndex:0];
-    NSString *timeMsg,*chargingLabel, *hourLabel, *minLabel, *completeLabel, *calulateLabel, *notChargingLabel, *trickleCharging;
-    
-    if ([currentLanguage isEqualToString:@"zh-Hans"]) {
-        chargingLabel = @"预计充电";
-        hourLabel = @"小时";
-        minLabel = @"分钟";
-        completeLabel = @"充电已完成";
-        calulateLabel = @"正在预估时间...";
-        notChargingLabel = @"不在充电";
-        trickleCharging = @"涓流充电中...";
-    }else if([currentLanguage isEqualToString:@"zh-Hant"]){
-        chargingLabel = @"預計充電";
-        hourLabel = @"小時";
-        minLabel = @"分鐘";
-        completeLabel = @"充電已完成";
-        calulateLabel = @"正在預估時間...";
-        notChargingLabel = @"不在充電";
-        trickleCharging = @"涓流充電中...";
-    }else{
-        chargingLabel = @"Remaining Time";
-        hourLabel = @"hour(s)";
-        minLabel = @"min(s)";
-        completeLabel = @"Charging is complete";
-        calulateLabel = @"Calculating...";
-        notChargingLabel = @"Not charging";
-        trickleCharging = @"Trickle Charging...";
-    }
-
-    float timeHour;
-    int hour, min;
-    int chargeMode = [[preference objectForKey:@"chargeMode"] intValue];
-    
-    if(isCharging){
-        if(levelPercent < 100 && instantAmperage > 0){
-            if(levelPercent < 80){
-                timeHour = (((maxCapacity * 0.8) - currentCapacity) / instantAmperage) + 1;
-                hour = timeHour;
-                min = (timeHour - hour) * 60;
-                timeMsg = timeMsg = [NSString stringWithFormat:@"%@: %d%@ %d%@", chargingLabel, hour, hourLabel, min, minLabel];
-            }else{
-                min = (100 - levelPercent) * 3;
-                timeMsg = [NSString stringWithFormat:@"%@:%d%@", chargingLabel, min, minLabel];
-            }
-        }else if(levelPercent == 100){
-            switch (chargeMode) {
-                case 1:
-                    timeMsg = completeLabel;
-                    break;
-                case 2:
-                    timeMsg = trickleCharging;
-                    break;
-                default:
-                    timeMsg = completeLabel;
-                    break;
-            }
-        }else{
-            timeMsg = calulateLabel;
-        }
-    } else if(!externalChargeCapable && externalConnected) {
-        timeMsg = notChargingLabel;
-    } else {
-        switch(chargeMode){
-            case 1:
-                timeMsg = notChargingLabel;
-                break;
-            case 2:
-                timeMsg = completeLabel;
-                break;
-            default:
-                timeMsg = notChargingLabel;
-                break;
-        }
-    }
-    remainingTime.text = timeMsg;
-
-    [preference release];
-}
-
--(void)dealloc
-{
-    [batteryLevel removeFromSuperview];
-    [remainingTime removeFromSuperview];
-    [containView removeFromSuperview];
-
-    [batteryLevel release];
-    [remainingTime release];
-    [containView release];
-    
-    isInited = NO;
-    %orig;
-}
-
-%new
--(void)initChargingTextView
-{
-    containView = [[UIView alloc] initWithFrame:CGRectMake(0, 200, 280, 60)];
-    containView.center = CGPointMake(130, 210);
-    containView.backgroundColor = [UIColor clearColor];
-    
-    batteryLevel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 280, 30)];
-    batteryLevel.font = [UIFont systemFontOfSize:25];
-    [batteryLevel setTextAlignment:NSTextAlignmentCenter];
-    [batteryLevel setTextColor:[UIColor whiteColor]];
-    batteryLevel.backgroundColor = [UIColor clearColor];
-    [containView addSubview:batteryLevel];
-    
-    remainingTime = [[UILabel alloc] initWithFrame:CGRectMake(0, 30, 280, 30)];
-    remainingTime.font = [UIFont systemFontOfSize:17];
-    [remainingTime setTextAlignment:NSTextAlignmentCenter];
-    [remainingTime setTextColor:[UIColor whiteColor]];
-    remainingTime.backgroundColor = [UIColor clearColor];
-    [containView addSubview:remainingTime];
-    
-    [self addSubview:containView];
-}
-%end
-
 /* When the Firmware > iOS 7, use SBLockScreenBatteryChargingView */
 #define isPad (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 
@@ -539,7 +393,11 @@ UILabel *batteryLevel, *remainingTime;
 @end
 
 %hook SBLockScreenBatteryChargingViewController
+
 BOOL isContentViewInited = NO;
+UIView *containView;
+UILabel *batteryLevel, *remainingTime;
+
 - (void)loadView
 {
     %orig;
@@ -701,7 +559,7 @@ BOOL isContentViewInited = NO;
             containView.center = CGPointMake([UIScreen mainScreen].bounds.size.height / 2, 205);
         }
     } else {
-        containView.center = CGPointMake([UIScreen mainScreen].bounds.size.width / 2, 160);
+        containView.center = CGPointMake([UIScreen mainScreen].bounds.size.width / 2, 155);
     }
 }
 %end
